@@ -1,6 +1,6 @@
 package interfaces;
 
-import gameComponents.Cell;
+import gameLogicComponents.Cell;
 
 /***
  * IRenderable interface defines the renderable contract for dungeons.
@@ -9,6 +9,6 @@ import gameComponents.Cell;
  * @author Mitch Powell
  *
  */
-public interface IRenderable {
+public interface IRenderableDungeon {
 	public Cell[][] getCells();
 }

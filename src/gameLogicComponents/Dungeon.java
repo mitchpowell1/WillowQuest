@@ -1,6 +1,6 @@
-package gameComponents;
+package gameLogicComponents;
 
-import interfaces.IRenderable;
+import interfaces.IRenderableDungeon;
 
 /***
  * Dungeon object definition. A dungeon primarily houses an (m x n) array of cells.
@@ -9,7 +9,7 @@ import interfaces.IRenderable;
  * @author Mitch Powell
  *
  */
-public class Dungeon implements IRenderable{
+public class Dungeon implements IRenderableDungeon{
 	
 	private Cell [][] cells;
 	private int width;
