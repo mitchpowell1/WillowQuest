@@ -1,11 +1,15 @@
 package gameComponents;
 
+import interfaces.IRenderable;
+
 /***
- * Dungeon object definition. A dungeon primarily houses an MxN array of cells.
- * @author mitch
+ * Dungeon object definition. A dungeon primarily houses an (m x n) array of cells.
+ * Implements IRenderable interface for effective decoupling from the dungeon
+ * renderer.
+ * @author Mitch Powell
  *
  */
-public class Dungeon {
+public class Dungeon implements IRenderable{
 	
 	private Cell [][] cells;
 	private int width;
