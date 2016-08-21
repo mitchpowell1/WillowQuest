@@ -12,10 +12,11 @@ public enum Cell {
 	DOOR	('D', Color.YELLOW),
 	ENTRANCE ('N', Color.BLUE),
 	EXIT ('X', Color.CYAN),
-	ROOM ('R', Color.LIGHT_GRAY),
+	MONSTER('M', Color.magenta),
+	ROOM (' ', Color.LIGHT_GRAY),
 	TRAP ('T', Color.RED),
 	TREASURE ('G', Color.GREEN),
-	WALL ('W', Color.BLACK);
+	WALL ('#', Color.BLACK);
 	
 	/**
 	 * Setting some display variables for each of the different kinds of cells

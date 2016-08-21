@@ -39,8 +39,4 @@ public class Composition {
 	public IRoomDescriptionFactory getRoomDescriptionFactory(){
 		return roomDescriptionFactory;
 	}
-	
-	public void IRoomGenerator(){
-		
-	}
 }

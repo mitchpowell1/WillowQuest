@@ -1,14 +1,10 @@
 package gameLogicComponents;
 
-import java.awt.geom.Point2D;
-import java.util.Random;
-
 import interfaces.ICollideableRoom;
 import interfaces.ICompareableCoord;
 
 public class RoomDescription implements ICollideableRoom {
-	private int height;
-	private int width;
+
 	private ICompareableCoord topLeft;
 	private ICompareableCoord bottomRight;
 	/**
@@ -19,8 +15,6 @@ public class RoomDescription implements ICollideableRoom {
 	 * @param bottomRight the cartesian location of the bottom right cell
 	 */
 	public RoomDescription(ICompareableCoord topLeft, ICompareableCoord bottomRight){
-		this.height = topLeft.getY()-bottomRight.getY();
-		this.width = bottomRight.getX()-topLeft.getX();
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
 	}
@@ -32,22 +26,21 @@ public class RoomDescription implements ICollideableRoom {
 	 * @return whether or not the two rooms collide
 	 */
 	public boolean collidesWith(ICollideableRoom room) {
-		boolean collision = false;
-		// If the top left corner of this room is to the top left of
-		// the bottom right corner of the other room, and to the bottom
-		// right of the top left corner of the other room, there is a collision.
-		if(this.topLeft.topLeftOf(room.getBottomRight())
-				&& this.topLeft.bottomRightOf(room.getTopLeft())){
-			collision = true;
-		// Otherwise, if the bottom right corner of this object is to the
-		// bottom right of the top left corner of the other object, and the
-		// the top left of the bottom right corner of the other object,
-		// there is a collision.
-		} else if(this.bottomRight.bottomRightOf(room.getTopLeft())
-				&& this.bottomRight.topLeftOf(room.getBottomRight())){
-			collision = true;
-		}
-		return collision;
+		// Checks all the conditions that could mean two rooms haven't collided.
+		// if none of them are true, that means the two rooms collide :D
+		return !(
+				// The two rooms do not collide if:
+				// The left side of the other room is to the right of the
+				// right side of this room.
+				room.getTopLeft().getX() > this.getBottomRight().getX() ||
+				// Or if the right side of the other room is to the left of the left
+				// side of this room.
+				room.getBottomRight().getX() < this.getTopLeft().getX() ||
+				// Or if the top of the other room is below the bottom of this room.
+				room.getTopLeft().getY() > this.bottomRight.getY() ||
+				// Or if the bottom of the other room is above the top of this room.
+				room.getBottomRight().getY() < this.topLeft.getY()
+				);
 	}
 
 	@Override

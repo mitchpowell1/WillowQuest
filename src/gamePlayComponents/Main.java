@@ -1,13 +1,12 @@
 package gamePlayComponents;
 
 import gamePlayComponents.Composition;
+import gameSettingComponents.DungeonDensity;
 import gameDisplayComponents.DungeonPrinter;
 import gameLogicComponents.Dungeon;
 import gameLogicComponents.DungeonFactory;
 
 public class Main {
-	private static int HEIGHT = 1;
-	private static int WIDTH = 4;
 
 	public static void main(String[] args) {
 		Composition comp = new Composition();
@@ -16,11 +15,14 @@ public class Main {
 				comp.getRoomDescriptionFactory()
 				);
 		DungeonPrinter print = new DungeonPrinter();
-		for(int i=0; i<1000; i++){
-			Dungeon dungeon = fact.getDungeon(HEIGHT,WIDTH);
-			print.printDungeon(dungeon);
-			System.out.println();
-		}
+		print.printDungeon(fact.getDungeon());
+		System.out.println();
+		fact.setRoomDensity(DungeonDensity.SPARSE);
+		print.printDungeon(fact.getDungeon());
+		System.out.println();
+		fact.setRoomDensity(DungeonDensity.DENSE);
+		print.printDungeon(fact.getDungeon());
+		System.out.println(comp.getRandomGen().nextFloat());
 	}
 
 }
