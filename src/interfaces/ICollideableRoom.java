@@ -6,6 +6,8 @@ package interfaces;
  * @author Mitch Powell
  *
  */
-public interface ICollideable {
-	public boolean collidesWith(ICollideable room);
+public interface ICollideableRoom {
+	public boolean collidesWith(ICollideableRoom room);
+	public ICompareableCoord getTopLeft();
+	public ICompareableCoord getBottomRight();
 }

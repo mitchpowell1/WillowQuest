@@ -1,16 +1,24 @@
 package gameLogicComponents;
 
+import java.util.ArrayList;
 import java.util.Random;
+
+import interfaces.IRoomDescriptionFactory;
+import interfaces.ICollideableRoom;
 
 public class DungeonFactory {
 	private Random randomGenerator;
+	private IRoomDescriptionFactory roomFactory;
 	private int roomDensity;
 	
 	/***
 	 * Constructor method for a dungeon factory object.
 	 */
-	public DungeonFactory(){
-		this.randomGenerator = new Random();
+	public DungeonFactory(Random rand, IRoomDescriptionFactory roomFact){
+		this.randomGenerator = rand;
+		this.roomFactory = roomFact;
+		this.roomDensity = 100;
+		
 	}
 	
 	/***
@@ -24,6 +32,7 @@ public class DungeonFactory {
 	public Dungeon getDungeon(int dungeonHeight, int dungeonWidth){
 		Cell[][] cells = initDungeon(dungeonHeight, dungeonWidth);
 		addEntranceExit(cells);
+		addRooms(cells,dungeonHeight,dungeonWidth);
 		return new Dungeon(cells);
 	}
 	
@@ -101,7 +110,19 @@ public class DungeonFactory {
 		}
 	}
 	
-	private void addRooms(Cell[][] cellArray){
-		
+	private void addRooms(Cell[][] cellArray, int width, int height){
+		ArrayList<ICollideableRoom> rooms = new ArrayList<ICollideableRoom>();
+		for(int attempt=0; attempt < this.roomDensity; attempt++){
+			ICollideableRoom room = this.roomFactory.getRoom(width, height);
+			boolean collision = false;
+			for(int existingRoom = 0; existingRoom < rooms.size(); existingRoom++){
+				if(room.collidesWith(rooms.get(existingRoom))){
+					collision = true;
+				}
+			}
+			if(!collision){
+				rooms.add(room);
+			}
+		}
 	}
 }
