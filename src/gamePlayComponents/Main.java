@@ -12,7 +12,7 @@ public class Main {
 		Composition comp = new Composition();
 		DungeonFactory fact = new DungeonFactory(
 				comp.getRandomGen(), 
-				comp.getRoomDescriptionFactory(),
+				comp.getRoomGenerator(),
 				comp.getCorridorGenerator(),
 				comp.getMonsterGenerator()
 				);

@@ -6,13 +6,14 @@ import java.util.Random;
 import gameSettingComponents.DungeonDensity;
 import gameSettingComponents.MonsterLevels;
 import interfaces.IRoomDescriptionFactory;
+import interfaces.IRoomGenerator;
 import interfaces.ICollideableRoom;
 import interfaces.ICorridorGenerator;
 import interfaces.IMonsterGenerator;
 
 public class DungeonFactory {
 	private Random randomGenerator;
-	private IRoomDescriptionFactory roomFactory;
+	private IRoomGenerator roomGenerator;
 	private ICorridorGenerator corridorGenerator;
 	private IMonsterGenerator monsterGenerator;
 	private int roomDensity;
@@ -25,10 +26,10 @@ public class DungeonFactory {
 	/***
 	 * Constructor method for a dungeon factory object.
 	 */
-	public DungeonFactory(Random rand, IRoomDescriptionFactory roomFact, ICorridorGenerator corGen, 
+	public DungeonFactory(Random rand, IRoomGenerator roomGen, ICorridorGenerator corGen, 
 			IMonsterGenerator monsterGenerator) {
 		this.randomGenerator = rand;
-		this.roomFactory = roomFact;
+		this.roomGenerator = roomGen;
 		this.corridorGenerator = corGen;
 		this.monsterGenerator = monsterGenerator;
 		this.dungeonWidth = 50;
@@ -257,49 +258,8 @@ public class DungeonFactory {
 	 * 
 	 * @param cellArray
 	 *            the array of cells to add rooms to.
-	 * @param width
-	 *            the width of the dungeon. Used by the room factory.
-	 * @param height
-	 *            the height of the dungeon. Used by the room factory.
 	 */
 	private void addRooms(Cell[][] cellArray) {
-		ArrayList<ICollideableRoom> rooms = new ArrayList<ICollideableRoom>();
-
-		// Generating non-colliding rooms
-		for (int attempt = 0; attempt < this.roomDensity; attempt++) {
-			// Fetch a new room from the room factory
-			ICollideableRoom room = this.roomFactory.getRoom(this.dungeonWidth, this.dungeonHeight);
-			// start with no collisions detected
-			boolean collision = false;
-			// iterate through every room in the existing arraylist of rooms
-			for (int existingRoom = 0; existingRoom < rooms.size(); existingRoom++) {
-				// If the newly generated room collides with an existing room,
-				// update
-				// the collision boolean
-				if (room.collidesWith(rooms.get(existingRoom))) {
-					collision = true;
-				}
-			}
-			// Add the new room to the list of rooms if there has not been a
-			// collision
-			if (!collision) {
-				rooms.add(room);
-			}
-		}
-		// Next, update the cells in the cell array to reflect the positions of
-		// all of the rooms
-		for (ICollideableRoom room : rooms) {
-			int topLeftX = room.getTopLeft().getRow();
-			int topLeftY = room.getTopLeft().getCol();
-			int bottomRightX = room.getBottomRight().getRow();
-			int bottomRightY = room.getBottomRight().getCol();
-			int roomHeight = bottomRightY - topLeftY;
-			int roomWidth = bottomRightX - topLeftX;
-			for (int i = 0; i < roomHeight; i++) {
-				for (int j = 0; j < roomWidth; j++) {
-					cellArray[topLeftY + i][topLeftX + j] = Cell.ROOM;
-				}
-			}
-		}
+		this.roomGenerator.generateRooms(cellArray, this.roomDensity);
 	}
 }

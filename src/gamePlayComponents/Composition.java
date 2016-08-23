@@ -6,10 +6,12 @@ import gameLogicComponents.CoordinateFactory;
 import gameLogicComponents.CorridorGenerator;
 import gameLogicComponents.MonsterGenerator;
 import gameLogicComponents.RoomDescriptionFactory;
+import gameLogicComponents.RoomGenerator;
 import interfaces.ICoordFactory;
 import interfaces.ICorridorGenerator;
 import interfaces.IMonsterGenerator;
 import interfaces.IRoomDescriptionFactory;
+import interfaces.IRoomGenerator;
 
 /***
  * This Composition class behaves as the dependency injector for the project. Any non system-library
@@ -25,6 +27,7 @@ public class Composition {
 	private ICorridorGenerator corGen;
 	private IRoomDescriptionFactory roomDescriptionFactory;
 	private IMonsterGenerator monstGen;
+	private IRoomGenerator roomGen;
 	
 	public Composition(){
 		rand = new Random();
@@ -32,6 +35,7 @@ public class Composition {
 		roomDescriptionFactory = new RoomDescriptionFactory(coordFact, rand);
 		corGen = new CorridorGenerator(rand,coordFact);
 		monstGen = new MonsterGenerator(rand);
+		roomGen = new RoomGenerator(roomDescriptionFactory);
 	}
 	
 	/***
@@ -44,8 +48,8 @@ public class Composition {
 		return rand;
 	}
 	
-	public IRoomDescriptionFactory getRoomDescriptionFactory(){
-		return roomDescriptionFactory;
+	public IRoomGenerator getRoomGenerator(){
+		return roomGen;
 	}
 	
 	public ICorridorGenerator getCorridorGenerator(){
