@@ -32,14 +32,14 @@ public class RoomDescription implements ICollideableRoom {
 				// The two rooms do not collide if:
 				// The left side of the other room is to the right of the
 				// right side of this room.
-				room.getTopLeft().getX() > this.getBottomRight().getX() ||
+				room.getTopLeft().getRow() > this.getBottomRight().getRow() ||
 				// Or if the right side of the other room is to the left of the left
 				// side of this room.
-				room.getBottomRight().getX() < this.getTopLeft().getX() ||
+				room.getBottomRight().getRow() < this.getTopLeft().getRow() ||
 				// Or if the top of the other room is below the bottom of this room.
-				room.getTopLeft().getY() > this.bottomRight.getY() ||
+				room.getTopLeft().getCol() > this.bottomRight.getCol() ||
 				// Or if the bottom of the other room is above the top of this room.
-				room.getBottomRight().getY() < this.topLeft.getY()
+				room.getBottomRight().getCol() < this.topLeft.getCol()
 				);
 	}
 

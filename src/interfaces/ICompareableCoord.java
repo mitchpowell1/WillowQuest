@@ -7,8 +7,8 @@ package interfaces;
  *
  */
 public interface ICompareableCoord {
-	public int getX();
-	public int getY();
+	public int getRow();
+	public int getCol();
 	public boolean topLeftOf(ICompareableCoord other);
 	public boolean bottomRightOf(ICompareableCoord other);
 }

@@ -7,10 +7,12 @@ import gameSettingComponents.DungeonDensity;
 import gameSettingComponents.MonsterLevels;
 import interfaces.IRoomDescriptionFactory;
 import interfaces.ICollideableRoom;
+import interfaces.ICorridorGenerator;
 
 public class DungeonFactory {
 	private Random randomGenerator;
 	private IRoomDescriptionFactory roomFactory;
+	private ICorridorGenerator corridorGenerator;
 	private int roomDensity;
 	private int dungeonWidth;
 	private int dungeonHeight;
@@ -20,11 +22,12 @@ public class DungeonFactory {
 	/***
 	 * Constructor method for a dungeon factory object.
 	 */
-	public DungeonFactory(Random rand, IRoomDescriptionFactory roomFact) {
+	public DungeonFactory(Random rand, IRoomDescriptionFactory roomFact, ICorridorGenerator corGen) {
 		this.randomGenerator = rand;
 		this.roomFactory = roomFact;
-		this.dungeonWidth = 100;
-		this.dungeonHeight = 100;
+		this.corridorGenerator = corGen;
+		this.dungeonWidth = 50;
+		this.dungeonHeight = 50;
 		setRoomDensity(DungeonDensity.MEDIUM);
 		setMonsterProb(MonsterLevels.MEDIUM);
 
@@ -32,7 +35,7 @@ public class DungeonFactory {
 	}
 
 	/***
-	 * Sets the probabilities of monsters occuring in rooms and corridors.
+	 * Sets the probabilities of monsters occurring in rooms and corridors.
 	 * @param lev the level of monsters.
 	 */
 	public void setMonsterProb(MonsterLevels lev){
@@ -54,9 +57,46 @@ public class DungeonFactory {
 	public Dungeon getDungeon() {
 		Cell[][] cells = initDungeon();
 		addRooms(cells);
-		addEntranceExit(cells);
+		addWalls(cells);
+		addCorridors(cells);
 		addMonsters(cells);
+		addEntranceExit(cells);
 		return new Dungeon(cells);
+	}
+
+	private void addCorridors(Cell[][] cells) {
+		this.corridorGenerator.generateCorridors(cells);	
+	}
+
+	/***
+	 * Adds wall blocks to border the perimeter of the dungeon and border rooms.
+	 * @param cells the array of cells to have walls added.
+	 */
+	private void addWalls(Cell[][] cells) {
+		for(int i = 0; i<cells[0].length; i++){
+			cells[0][i] = Cell.WALL;
+			cells[cells.length-1][i] = Cell.WALL;
+		}
+		for(int row=1; row<cells.length-1; row++){
+			// Every row is bordered by a wall on either side
+			cells[row][0] = Cell.WALL;
+			cells[row][cells[row].length-1] = Cell.WALL;
+			for(int col=1;col<cells[0].length-1; col++){
+				if(cells[row][col] == Cell.STONE){
+					//Stone Cells that border rooms are turned into walls.
+					if(cells[row+1][col] == Cell.ROOM ||
+							cells[row-1][col] == Cell.ROOM ||
+							cells[row][col+1] == Cell.ROOM ||
+							cells[row][col-1] == Cell.ROOM ||
+							cells[row+1][col+1] == Cell.ROOM ||
+							cells[row-1][col-1] == Cell.ROOM ||
+							cells[row+1][col-1] == Cell.ROOM ||
+							cells[row-1][col+1] == Cell.ROOM){
+						cells[row][col] = Cell.WALL;
+					}
+				}
+			}
+		}
 	}
 
 	/***
@@ -106,20 +146,20 @@ public class DungeonFactory {
 	}
 
 	/***
-	 * Initializes an array of cells, each of which is of type WALL.
+	 * Initializes an array of cells, each of which is of type STONE.
 	 * 
 	 * @param height
 	 *            the height of the 2D cell array
 	 * @param width
 	 *            the width of the 2D cell array
-	 * @return the 2D cell array of WALL cells
+	 * @return the 2D cell array of STONE cells
 	 */
 	private Cell[][] initDungeon() {
 		Cell[][] cells = new Cell[this.dungeonHeight][this.dungeonWidth];
-		// Iterate through every row and column and set the type to WALL
+		// Iterate through every row and column and set the type to STONE
 		for (int row = 0; row < this.dungeonHeight; row++) {
 			for (int col = 0; col < this.dungeonWidth; col++) {
-				cells[row][col] = Cell.WALL;
+				cells[row][col] = Cell.STONE;
 			}
 		}
 		return cells;
@@ -142,40 +182,81 @@ public class DungeonFactory {
 		if (ceilings) {
 			// Decide the position of the entrance
 			boolean enterOnCeiling = randomGenerator.nextBoolean();
-			int entrance = randomGenerator.nextInt(numCols);
-			int exit = randomGenerator.nextInt(numCols);
 			// If the entrance is on the ceiling
 			if (enterOnCeiling) {
-				// Put the entrance in it's appropriate place at the top
-				cellArray[0][entrance] = Cell.ENTRANCE;
-				// Put the exit at it's appropriate place at the bottom
-				cellArray[numRows - 1][exit] = Cell.EXIT;
-				// If the entrance is on the floor
+				addEntranceExitCeiling(cellArray,Cell.ENTRANCE);
+				addEntranceExitFloor(cellArray,Cell.EXIT);
 			} else {
-				cellArray[0][exit] = Cell.EXIT;
-				cellArray[numRows - 1][entrance] = Cell.ENTRANCE;
+				addEntranceExitCeiling(cellArray,Cell.EXIT);
+				addEntranceExitFloor(cellArray,Cell.ENTRANCE);
 			}
 			// If the entrance and exit are on the left and right walls
 		} else {
 			boolean enterLeft = randomGenerator.nextBoolean();
-			int entrance = randomGenerator.nextInt(numRows);
-			int exit = randomGenerator.nextInt(numRows);
 			// If the entrance is on the left
 			if (enterLeft) {
-				// Place the entrance at it's appropriate place in the leftmost
-				// column
-				cellArray[entrance][0] = Cell.ENTRANCE;
-				// Place the entrance at it's appropriate place at the rightmost
-				// column
-				cellArray[exit][numCols - 1] = Cell.EXIT;
-				// If the entrance is on the right
+				// Place the entrances and exits appropriately.
+				addEntranceExitLeft(cellArray, Cell.ENTRANCE);
+				addEntranceExitRight(cellArray, Cell.EXIT);
 			} else {
-				cellArray[exit][0] = Cell.EXIT;
-				cellArray[entrance][numCols - 1] = Cell.ENTRANCE;
+				addEntranceExitLeft(cellArray, Cell.EXIT);
+				addEntranceExitRight(cellArray, Cell.ENTRANCE);
 			}
 		}
 	}
 
+	/***
+	 * Adds an entrance or exit to the ceiling, making sure that the entrance or exit
+	 * is connected to either a corridor or a room.
+	 * @param cellArray the array of cells to be manipulated
+	 * @param cell the type of cell to be added (Entrance or Exit).
+	 */
+	private void addEntranceExitCeiling(Cell[][] cellArray, Cell cell){
+		int index = this.randomGenerator.nextInt(dungeonWidth);
+		while(cellArray[1][index] != Cell.ROOM && cellArray[1][index] != Cell.CORRIDOR){
+			index = this.randomGenerator.nextInt(dungeonWidth);
+		}
+		cellArray[0][index] = cell;
+	}
+	
+	/***
+	 * Adds either an entrance or exit to floor, making sure the added cell touches a room or corridor block.
+	 * @param cellArray the array of cells to be manipulated
+	 * @param cell the cell to be added.
+	 */
+	private void addEntranceExitFloor(Cell[][] cellArray, Cell cell){
+		int index = this.randomGenerator.nextInt(dungeonWidth);
+		while(cellArray[dungeonHeight-2][index] != Cell.ROOM && cellArray[cellArray.length-2][index] != Cell.CORRIDOR){
+			index = this.randomGenerator.nextInt(dungeonWidth);
+		}
+		cellArray[dungeonHeight-1][index] = cell;
+	}
+	
+	/***
+	 * Adds an entrance or exit to the left wall, ensuring the entrance/exit touches a room or corridor.
+	 * @param cellArray the array of cells to be manipulated
+	 * @param cell the kind of cell to add.
+	 */
+	private void addEntranceExitLeft(Cell[][] cellArray, Cell cell){
+		int index = this.randomGenerator.nextInt(dungeonHeight);
+		while(cellArray[index][1] != Cell.ROOM && cellArray[index][1] != Cell.CORRIDOR){
+			index = this.randomGenerator.nextInt(dungeonHeight);
+		}
+		cellArray[index][0] = cell;
+	}
+	
+	/***
+	 * Adds either an entrance or an exit to the array of cells.
+	 * @param cellArray the array of cells to be manipulated
+	 * @param cell the type of cell to add.
+	 */
+	private void addEntranceExitRight(Cell[][] cellArray, Cell cell){
+		int index = this.randomGenerator.nextInt(dungeonHeight);
+		while(cellArray[index][dungeonWidth-2] != Cell.ROOM && cellArray[index][dungeonWidth-2] !=Cell.CORRIDOR){
+			index = this.randomGenerator.nextInt(dungeonHeight);
+		}
+		cellArray[index][dungeonWidth-1] = cell;
+	}
 	/***
 	 * Programmatically adds rooms to the array of cells based on the room
 	 * density instance variable.
@@ -214,10 +295,10 @@ public class DungeonFactory {
 		// Next, update the cells in the cell array to reflect the positions of
 		// all of the rooms
 		for (ICollideableRoom room : rooms) {
-			int topLeftX = room.getTopLeft().getX();
-			int topLeftY = room.getTopLeft().getY();
-			int bottomRightX = room.getBottomRight().getX();
-			int bottomRightY = room.getBottomRight().getY();
+			int topLeftX = room.getTopLeft().getRow();
+			int topLeftY = room.getTopLeft().getCol();
+			int bottomRightX = room.getBottomRight().getRow();
+			int bottomRightY = room.getBottomRight().getCol();
 			int roomHeight = bottomRightY - topLeftY;
 			int roomWidth = bottomRightX - topLeftX;
 			for (int i = 0; i < roomHeight; i++) {

@@ -12,17 +12,11 @@ public class Main {
 		Composition comp = new Composition();
 		DungeonFactory fact = new DungeonFactory(
 				comp.getRandomGen(), 
-				comp.getRoomDescriptionFactory()
+				comp.getRoomDescriptionFactory(),
+				comp.getCorridorGenerator()
 				);
 		DungeonPrinter print = new DungeonPrinter();
 		print.printDungeon(fact.getDungeon());
-		System.out.println();
-		fact.setRoomDensity(DungeonDensity.SPARSE);
-		print.printDungeon(fact.getDungeon());
-		System.out.println();
-		fact.setRoomDensity(DungeonDensity.DENSE);
-		print.printDungeon(fact.getDungeon());
-		System.out.println(comp.getRandomGen().nextFloat());
 	}
 
 }

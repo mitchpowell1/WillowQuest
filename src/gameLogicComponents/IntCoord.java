@@ -29,7 +29,7 @@ public class IntCoord implements ICompareableCoord{
 	 * Get the x coordinate of the coordinate pair
 	 * @return the x-coordinate
 	 */
-	public int getX(){
+	public int getRow(){
 		return this.x;
 	}
 	
@@ -37,7 +37,7 @@ public class IntCoord implements ICompareableCoord{
 	 * Get the y coordinate of the cooridinate pair
 	 * @return the y-coordinate
 	 */
-	public int getY(){
+	public int getCol(){
 		return this.y;
 	}
 	
@@ -48,7 +48,7 @@ public class IntCoord implements ICompareableCoord{
 	 * @return the "topLeftness" of this object compared to another.
 	 */
 	public boolean topLeftOf(ICompareableCoord other){
-		return this.x < other.getX() && this.y > other.getY();
+		return this.x < other.getRow() && this.y > other.getCol();
 	}
 	
 	/***
@@ -58,7 +58,7 @@ public class IntCoord implements ICompareableCoord{
 	 * @return the "bottomRightness" of this object compared to the other.
 	 */
 	public boolean bottomRightOf(ICompareableCoord other){
-		return this.x > other.getX() && this.y < other.getY();
+		return this.x > other.getRow() && this.y < other.getCol();
 	}
 
 }

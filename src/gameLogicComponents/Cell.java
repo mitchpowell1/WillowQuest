@@ -8,15 +8,16 @@ import java.awt.Color;
  *
  */
 public enum Cell {
-	CORRIDOR ('C', Color.WHITE),
+	CORRIDOR (' ', Color.WHITE),
 	DOOR	('D', Color.YELLOW),
-	ENTRANCE ('N', Color.BLUE),
-	EXIT ('X', Color.CYAN),
-	MONSTER('M', Color.magenta),
+	ENTRANCE ('\u25CB', Color.BLUE),
+	EXIT ('\u25CE', Color.CYAN),
+	MONSTER('\u2639', Color.magenta),
 	ROOM (' ', Color.LIGHT_GRAY),
+	STONE ('\u25A4', Color.BLACK),
 	TRAP ('T', Color.RED),
 	TREASURE ('G', Color.GREEN),
-	WALL ('#', Color.BLACK);
+	WALL ('\u25A0', Color.DARK_GRAY);
 	
 	/**
 	 * Setting some display variables for each of the different kinds of cells

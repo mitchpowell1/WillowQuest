@@ -3,8 +3,10 @@ package gamePlayComponents;
 import java.util.Random;
 
 import gameLogicComponents.CoordinateFactory;
+import gameLogicComponents.CorridorGenerator;
 import gameLogicComponents.RoomDescriptionFactory;
 import interfaces.ICoordFactory;
+import interfaces.ICorridorGenerator;
 import interfaces.IRoomDescriptionFactory;
 
 /***
@@ -18,12 +20,14 @@ import interfaces.IRoomDescriptionFactory;
 public class Composition {
 	private Random rand;
 	private ICoordFactory coordFact;
-	private RoomDescriptionFactory roomDescriptionFactory;
+	private ICorridorGenerator corGen;
+	private IRoomDescriptionFactory roomDescriptionFactory;
 	
 	public Composition(){
 		rand = new Random();
 		coordFact = new CoordinateFactory();
 		roomDescriptionFactory = new RoomDescriptionFactory(coordFact, rand);
+		corGen = new CorridorGenerator(rand,coordFact);
 	}
 	
 	/***
@@ -38,5 +42,9 @@ public class Composition {
 	
 	public IRoomDescriptionFactory getRoomDescriptionFactory(){
 		return roomDescriptionFactory;
+	}
+	
+	public ICorridorGenerator getCorridorGenerator(){
+		return corGen;
 	}
 }
