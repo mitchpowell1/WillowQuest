@@ -8,24 +8,29 @@ import gameSettingComponents.MonsterLevels;
 import interfaces.IRoomDescriptionFactory;
 import interfaces.ICollideableRoom;
 import interfaces.ICorridorGenerator;
+import interfaces.IMonsterGenerator;
 
 public class DungeonFactory {
 	private Random randomGenerator;
 	private IRoomDescriptionFactory roomFactory;
 	private ICorridorGenerator corridorGenerator;
+	private IMonsterGenerator monsterGenerator;
 	private int roomDensity;
 	private int dungeonWidth;
 	private int dungeonHeight;
 	private double monsterRoomProb;
 	private double monsterCorrProb;
+	
 
 	/***
 	 * Constructor method for a dungeon factory object.
 	 */
-	public DungeonFactory(Random rand, IRoomDescriptionFactory roomFact, ICorridorGenerator corGen) {
+	public DungeonFactory(Random rand, IRoomDescriptionFactory roomFact, ICorridorGenerator corGen, 
+			IMonsterGenerator monsterGenerator) {
 		this.randomGenerator = rand;
 		this.roomFactory = roomFact;
 		this.corridorGenerator = corGen;
+		this.monsterGenerator = monsterGenerator;
 		this.dungeonWidth = 50;
 		this.dungeonHeight = 50;
 		setRoomDensity(DungeonDensity.MEDIUM);
@@ -130,19 +135,8 @@ public class DungeonFactory {
 	 * @param cellArray
 	 */
 	private void addMonsters(Cell[][] cellArray) {
-		for(int row=0; row<cellArray.length; row++){
-			for(int col=0; col<cellArray[0].length; col++){
-				if(cellArray[row][col]== Cell.ROOM){
-					if(this.randomGenerator.nextDouble() < this.monsterRoomProb){
-						cellArray[row][col] = Cell.MONSTER;
-					}
-				} else if(cellArray[row][col] == Cell.CORRIDOR){
-					if(this.randomGenerator.nextDouble() < this.monsterCorrProb){
-						cellArray[row][col] = Cell.MONSTER;
-					}
-				}
-			}
-		}
+		this.monsterGenerator.addMonsters(cellArray,
+				this.monsterRoomProb, this.monsterCorrProb);
 	}
 
 	/***

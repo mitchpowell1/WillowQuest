@@ -13,7 +13,8 @@ public class Main {
 		DungeonFactory fact = new DungeonFactory(
 				comp.getRandomGen(), 
 				comp.getRoomDescriptionFactory(),
-				comp.getCorridorGenerator()
+				comp.getCorridorGenerator(),
+				comp.getMonsterGenerator()
 				);
 		DungeonPrinter print = new DungeonPrinter();
 		print.printDungeon(fact.getDungeon());

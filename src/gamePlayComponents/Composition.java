@@ -4,9 +4,11 @@ import java.util.Random;
 
 import gameLogicComponents.CoordinateFactory;
 import gameLogicComponents.CorridorGenerator;
+import gameLogicComponents.MonsterGenerator;
 import gameLogicComponents.RoomDescriptionFactory;
 import interfaces.ICoordFactory;
 import interfaces.ICorridorGenerator;
+import interfaces.IMonsterGenerator;
 import interfaces.IRoomDescriptionFactory;
 
 /***
@@ -22,12 +24,14 @@ public class Composition {
 	private ICoordFactory coordFact;
 	private ICorridorGenerator corGen;
 	private IRoomDescriptionFactory roomDescriptionFactory;
+	private IMonsterGenerator monstGen;
 	
 	public Composition(){
 		rand = new Random();
 		coordFact = new CoordinateFactory();
 		roomDescriptionFactory = new RoomDescriptionFactory(coordFact, rand);
 		corGen = new CorridorGenerator(rand,coordFact);
+		monstGen = new MonsterGenerator(rand);
 	}
 	
 	/***
@@ -46,5 +50,9 @@ public class Composition {
 	
 	public ICorridorGenerator getCorridorGenerator(){
 		return corGen;
+	}
+	
+	public IMonsterGenerator getMonsterGenerator(){
+		return monstGen;
 	}
 }
