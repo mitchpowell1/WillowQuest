@@ -45,6 +45,10 @@ public class CorridorGenerator implements ICorridorGenerator {
 		removeDeadEnds();
 	}
 	
+	/***
+	 * Iterates through all the cells, Identifying and then
+	 * eliminating dead ends
+	 */
 	private void removeDeadEnds() {
 		int dungeonHeight = cells.length;
 		int dungeonWidth = cells[0].length;
@@ -57,6 +61,13 @@ public class CorridorGenerator implements ICorridorGenerator {
 		}
 	}
 	
+	/***
+	 * Once a dead end has been identified, this
+	 * method reduces the dead end corridor until
+	 * it is no longer a dead end.
+	 * @param row
+	 * @param col
+	 */
 	private void weedDeadEnd(int row,int col){
 		int newRow = row;
 		int newCol = col;
@@ -65,11 +76,10 @@ public class CorridorGenerator implements ICorridorGenerator {
 			Cell north = cells[newRow-1][newCol];
 			Cell south = cells[newRow+1][newCol];
 			Cell east = cells[newRow][newCol+1];
-			if(north == Cell.CORRIDOR){
+			if(north == Cell.CORRIDOR || north == Cell.DOOR){
 				newRow--;
-			} else if (south == Cell.CORRIDOR){
+			} else if (south == Cell.CORRIDOR || south == Cell.DOOR){
 				newRow++;
-			} else if (east == Cell.CORRIDOR){	
 				newCol++;
 			} else {
 				newCol--;

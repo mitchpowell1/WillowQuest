@@ -65,6 +65,10 @@ public class DungeonFactory {
 		return new Dungeon(cells);
 	}
 
+	/**
+	 * Generate dungeon corridors.
+	 * @param cells
+	 */
 	private void addCorridors(Cell[][] cells) {
 		this.corridorGenerator.generateCorridors(cells);	
 	}

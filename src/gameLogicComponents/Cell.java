@@ -9,7 +9,7 @@ import java.awt.Color;
  */
 public enum Cell {
 	CORRIDOR (' ', Color.WHITE),
-	DOOR	('\u25A1', Color.YELLOW),
+	DOOR	('\u25EB', Color.YELLOW),
 	ENTRANCE ('\u25CB', Color.BLUE),
 	EXIT ('\u25CE', Color.CYAN),
 	MONSTER('\u2639', Color.magenta),
