@@ -29,7 +29,7 @@ public class DungeonFactory {
 		this.corridorGenerator = corGen;
 		this.monsterGenerator = monsterGenerator;
 		this.dungeonWidth = 50;
-		this.dungeonHeight = 75;
+		this.dungeonHeight = 50;
 		setRoomDensity(DungeonDensity.MEDIUM);
 		setMonsterProb(MonsterLevels.MEDIUM);
 

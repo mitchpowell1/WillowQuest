@@ -28,10 +28,14 @@ public class DoorGenerator implements IDoorGenerator {
 		initConnected();
 		floodFill(entrance);
 		fillRemaining();
-		printConnected();
-
 	}
 
+	/***
+	 * After the main corridor has been connected to the entrance,
+	 * this function iterates through all of the connected cells, sees if they have
+	 * neighbors that could be doors, and then creates doors, connecting
+	 * the rooms that the doors attach to in the process.
+	 */
 	private void fillRemaining() {
 		for(int row=0; row<dungeonHeight; row++){
 			for(int col=0;col<dungeonWidth; col++){
@@ -117,6 +121,11 @@ public class DoorGenerator implements IDoorGenerator {
 		/* cells[row][col] == Cell.EXIT */) && !connected[row][col]);
 	}
 
+	/***
+	 * Finds cells that can be connected to and then connects them.
+	 * Works just like the paint bucket from Microsoft paint!
+	 * @param startCell the cell to begin the flood fill on.
+	 */
 	private void floodFill(ICompareableCoord startCell) {
 		Queue<ICompareableCoord> fillQueue = new LinkedList<ICompareableCoord>();
 		fillQueue.add(startCell);
@@ -177,19 +186,6 @@ public class DoorGenerator implements IDoorGenerator {
 		}
 	}
 
-	private void printConnected() {
-		for (int row = 0; row < dungeonHeight; row++) {
-			for (int col = 0; col < dungeonWidth; col++) {
-				if (connected[row][col]) {
-					System.out.print("x ");
-				} else {
-					System.out.print("  ");
-				}
-			}
-			System.out.println();
-		}
-	}
-
 	/***
 	 * Evaluates a cell and returns whether or not the cell is a bordering wall
 	 * of the dungeon
@@ -202,18 +198,38 @@ public class DoorGenerator implements IDoorGenerator {
 		return (isNorthernBorder(cell) || isSouthernBorder(cell) || isEasternBorder(cell) || isWesternBorder(cell));
 	}
 
+	/***
+	 * Checks if the cell is on the northern border of the dungeon
+	 * @param cell the cell to be checked
+	 * @return whether or not the cell is on the northern border
+	 */
 	private boolean isNorthernBorder(ICompareableCoord cell) {
 		return cell.getRow() == 0;
 	}
 
+	/***
+	 * Checks if the cell is on the southern border of the dungeon
+	 * @param cell the cell to be checked.
+	 * @return whether or not the cell is on the southern border of the screen.
+	 */
 	private boolean isSouthernBorder(ICompareableCoord cell) {
 		return cell.getRow() == dungeonHeight - 1;
 	}
 
+	/***
+	 * Checks if the cell is on the eastern border of the dungeon
+	 * @param cell the cell to be checked
+	 * @return whether or not the cell is on the southern border of the screen.
+	 */
 	private boolean isEasternBorder(ICompareableCoord cell) {
 		return cell.getCol() == dungeonWidth - 1;
 	}
 
+	/***
+	 * Checks if the cell is on the western border of the dungeon
+	 * @param cell the cell to be checked
+	 * @return whether or not the cell is on the western border of the screen.
+	 */
 	private boolean isWesternBorder(ICompareableCoord cell) {
 		return cell.getCol() == 0;
 	}

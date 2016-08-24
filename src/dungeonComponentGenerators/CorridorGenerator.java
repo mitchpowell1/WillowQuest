@@ -42,8 +42,68 @@ public class CorridorGenerator implements ICorridorGenerator {
 		}
 		generateTerminals();
 		generateDoors();
+		removeDeadEnds();
 	}
 	
+	private void removeDeadEnds() {
+		int dungeonHeight = cells.length;
+		int dungeonWidth = cells[0].length;
+		for(int row=0; row<dungeonHeight; row++){
+			for(int col=0; col<dungeonWidth; col++){
+				if(isDeadEnd(row,col)){
+					weedDeadEnd(row,col);
+				}
+			}
+		}
+	}
+	
+	private void weedDeadEnd(int row,int col){
+		int newRow = row;
+		int newCol = col;
+		while(isDeadEnd(newRow,newCol)){
+			cells[newRow][newCol] = Cell.STONE;
+			Cell north = cells[newRow-1][newCol];
+			Cell south = cells[newRow+1][newCol];
+			Cell east = cells[newRow][newCol+1];
+			if(north == Cell.CORRIDOR){
+				newRow--;
+			} else if (south == Cell.CORRIDOR){
+				newRow++;
+			} else if (east == Cell.CORRIDOR){	
+				newCol++;
+			} else {
+				newCol--;
+			}
+		}
+	}
+	
+	/***
+	 * Checks if a cell at a row and column index is a dead end
+	 * @param row the row index
+	 * @param col the column index
+	 * @return whether or not the cell is a dead end corridor.
+	 */
+	private boolean isDeadEnd(int row,int col){
+		if(cells[row][col] == Cell.CORRIDOR){
+			Cell[] neighbors = {
+				cells[row-1][col],
+				cells[row+1][col],
+				cells[row][col+1],
+				cells[row][col-1]
+			};
+			int usefulNeighbors = 0;
+			for(Cell cell: neighbors){
+				if(cell == Cell.CORRIDOR || cell == Cell.DOOR 
+						|| cell ==Cell.ENTRANCE || cell == Cell.EXIT){
+					usefulNeighbors++;
+				}
+			}
+			return usefulNeighbors < 2;
+			
+		}
+		return false;
+	}
+
 	/***
 	 * Use the door generator object to create some doors.
 	 */
@@ -66,29 +126,7 @@ public class CorridorGenerator implements ICorridorGenerator {
 	 * @param row
 	 * @param col
 	 */
-	private void generateMaze(int row, int col) {
-		//TODO: Fix the maze generation algorithm so that it does not generate a corridor
-		// on every square.
-/**		ArrayList<ICompareableCoord> cellList = new ArrayList<ICompareableCoord>();
-		int currRow = row;
-		int currCol = col;
-		//While the list of cells to check has not been exhausted
-		while(cellList.size()>0){
-			// Get a list of the visitable neighbors of the cell at the current row and column
-			ArrayList<ICompareableCoord> visitableNeighbors = getVisitableNeighbors(currRow,currCol);
-			// if the cell has visitable neighbors
-			if(visitableNeighbors.size() > 0){
-				//Mark the current cell as a corridor
-				cells[currRow][currCol] = Cell.CORRIDOR;
-				//Mark the current cell as visited
-				visited[currRow][currCol] = true;
-				//Add this cell to the list of cells to be revisited
-				cellList.add(coordFact.getCoord(currRow, currCol));
-				currentCell
-			}
-			
-		}**/
-		
+	private void generateMaze(int row, int col) {	
 	 ArrayList<ICompareableCoord> cellList = new ArrayList<ICompareableCoord>();
 		cellList.add(this.coordFact.getCoord(row, col));
 		int currentIndex = 0;
