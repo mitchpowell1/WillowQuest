@@ -7,32 +7,58 @@ import gameLogicComponents.Cell;
 import interfaces.ICompareableCoord;
 import interfaces.ICoordFactory;
 import interfaces.ICorridorGenerator;
+import interfaces.IDoorGenerator;
+import interfaces.ITerminalGenerator;
 
 public class CorridorGenerator implements ICorridorGenerator {
 	
 	private Random randGen;
 	private ICoordFactory coordFact;
+	private IDoorGenerator doorGen;
+	private ITerminalGenerator termGen;
 	private Cell[][] cells;
 	private boolean[][] visited;
 	
-	public CorridorGenerator(Random rand, ICoordFactory coordFact){
+	public CorridorGenerator(Random rand, ICoordFactory coordFact, IDoorGenerator doorGen,
+			ITerminalGenerator termGen){
 		this.randGen = rand;
 		this.coordFact = coordFact;
+		this.doorGen = doorGen;
+		this.termGen = termGen;
 	}
 
 	@Override
 	public void generateCorridors(Cell[][] cells) {
+		int dungeonWidth = cells[0].length;
+		int dungeonHeight = cells.length;
 		this.cells = cells;
 		initVisited();
-		for(int row=1; row<this.cells.length-1; row++){
-			for(int col=1; col<this.cells.length-1; col++){
+		for(int row=1; row<dungeonHeight; row++){
+			for(int col=1; col<dungeonWidth; col++){
 				if(!visited[row][col] && cells[row][col]!= Cell.WALL){
 					generateMaze(row,col);
 				}
 			}
 		}
+		generateTerminals();
+		generateDoors();
 	}
 	
+	/***
+	 * Use the door generator object to create some doors.
+	 */
+	private void generateDoors() {
+		doorGen.makeDoors(cells);
+		
+	}
+	
+	/***
+	 * Use the terminal generator to create some doors.
+	 */
+	private void generateTerminals(){
+		termGen.generateTerminals(cells);
+	}
+
 	/***
 	 * Generates a maze
 	 * @param cells

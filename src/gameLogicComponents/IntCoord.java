@@ -1,7 +1,5 @@
 package gameLogicComponents;
 
-import java.awt.geom.Point2D;
-
 import interfaces.ICompareableCoord;
 
 /***
@@ -39,6 +37,14 @@ public class IntCoord implements ICompareableCoord{
 	 */
 	public int getCol(){
 		return this.y;
+	}
+	
+	public void setRow(int newRow){
+		this.x = newRow;
+	}
+	
+	public void setCol(int newCol){
+		this.y = newCol;
 	}
 	
 	/***

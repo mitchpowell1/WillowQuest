@@ -1,10 +1,8 @@
 package gamePlayComponents;
 
 import gamePlayComponents.Composition;
-import gameSettingComponents.DungeonDensity;
 import factories.DungeonFactory;
 import gameDisplayComponents.DungeonPrinter;
-import gameLogicComponents.Dungeon;
 
 public class Main {
 
@@ -13,8 +11,7 @@ public class Main {
 		DungeonFactory fact = new DungeonFactory( 
 				comp.getRoomGenerator(),
 				comp.getCorridorGenerator(),
-				comp.getMonsterGenerator(),
-				comp.getTerminalGenerator()
+				comp.getMonsterGenerator()
 				);
 		DungeonPrinter print = new DungeonPrinter();
 		print.printDungeon(fact.getDungeon());

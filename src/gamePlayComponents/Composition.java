@@ -3,6 +3,7 @@ package gamePlayComponents;
 import java.util.Random;
 
 import dungeonComponentGenerators.CorridorGenerator;
+import dungeonComponentGenerators.DoorGenerator;
 import dungeonComponentGenerators.MonsterGenerator;
 import dungeonComponentGenerators.RoomGenerator;
 import dungeonComponentGenerators.TerminalGenerator;
@@ -10,6 +11,7 @@ import factories.CoordinateFactory;
 import factories.RoomDescriptionFactory;
 import interfaces.ICoordFactory;
 import interfaces.ICorridorGenerator;
+import interfaces.IDoorGenerator;
 import interfaces.IMonsterGenerator;
 import interfaces.IRoomDescriptionFactory;
 import interfaces.IRoomGenerator;
@@ -27,6 +29,7 @@ public class Composition {
 	private Random rand;
 	private ICoordFactory coordFact;
 	private ICorridorGenerator corGen;
+	private IDoorGenerator doorGen;
 	private IRoomDescriptionFactory roomDescriptionFactory;
 	private IMonsterGenerator monstGen;
 	private IRoomGenerator roomGen;
@@ -36,10 +39,12 @@ public class Composition {
 		rand = new Random();
 		coordFact = new CoordinateFactory();
 		roomDescriptionFactory = new RoomDescriptionFactory(coordFact, rand);
-		corGen = new CorridorGenerator(rand,coordFact);
+		doorGen = new DoorGenerator(coordFact);
 		monstGen = new MonsterGenerator(rand);
 		roomGen = new RoomGenerator(roomDescriptionFactory);
 		termGen = new TerminalGenerator(rand);
+		corGen = new CorridorGenerator(rand,coordFact,doorGen,termGen);
+
 	}
 	
 	/***

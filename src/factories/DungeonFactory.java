@@ -13,7 +13,6 @@ public class DungeonFactory {
 	private IRoomGenerator roomGenerator;
 	private ICorridorGenerator corridorGenerator;
 	private IMonsterGenerator monsterGenerator;
-	private ITerminalGenerator terminalGenerator;
 	private int roomDensity;
 	private int dungeonWidth;
 	private int dungeonHeight;
@@ -25,12 +24,12 @@ public class DungeonFactory {
 	 * Constructor method for a dungeon factory object.
 	 */
 	public DungeonFactory(IRoomGenerator roomGen, ICorridorGenerator corGen, 
-			IMonsterGenerator monsterGenerator, ITerminalGenerator termGen) {
+			IMonsterGenerator monsterGenerator) {
 		this.roomGenerator = roomGen;
 		this.corridorGenerator = corGen;
 		this.monsterGenerator = monsterGenerator;
 		this.dungeonWidth = 50;
-		this.dungeonHeight = 50;
+		this.dungeonHeight = 75;
 		setRoomDensity(DungeonDensity.MEDIUM);
 		setMonsterProb(MonsterLevels.MEDIUM);
 
@@ -63,7 +62,6 @@ public class DungeonFactory {
 		addWalls(cells);
 		addCorridors(cells);
 		addMonsters(cells);
-		addEntranceExit(cells);
 		return new Dungeon(cells);
 	}
 
@@ -157,16 +155,6 @@ public class DungeonFactory {
 		return cells;
 	}
 
-	/***
-	 * Uses the terminal generator object to add an entrance and exit to the dungeon
-	 * 
-	 * @param cellArray
-	 *            the array of cells that an entrance and exit will be added to.
-	 * @return
-	 */
-	private void addEntranceExit(Cell[][] cellArray) {
-		terminalGenerator.generateTerminals(cellArray);
-	}
 	/***
 	 * Uses the room generator object to the dungeon.
 	 * 

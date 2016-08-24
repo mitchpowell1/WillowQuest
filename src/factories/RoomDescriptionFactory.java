@@ -26,7 +26,7 @@ public class RoomDescriptionFactory implements IRoomDescriptionFactory {
 	/***
 	 * Creates a room description based upon the 
 	 */
-	public ICollideableRoom getRoom(int dungeonHeight, int dungeonWidth) {
+	public ICollideableRoom getRoom(int dungeonWidth, int dungeonHeight) {
 		int maxHeight = dungeonHeight / 10;
 		int minHeight = dungeonHeight / 20;
 		int maxWidth = dungeonWidth / 10;

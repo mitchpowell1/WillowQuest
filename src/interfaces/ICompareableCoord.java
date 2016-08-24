@@ -9,6 +9,8 @@ package interfaces;
 public interface ICompareableCoord {
 	public int getRow();
 	public int getCol();
+	public void setRow(int newRow);
+	public void setCol(int newCol);
 	public boolean topLeftOf(ICompareableCoord other);
 	public boolean bottomRightOf(ICompareableCoord other);
 }
