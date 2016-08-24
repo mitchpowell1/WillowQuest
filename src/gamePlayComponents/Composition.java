@@ -2,16 +2,18 @@ package gamePlayComponents;
 
 import java.util.Random;
 
-import gameLogicComponents.CoordinateFactory;
-import gameLogicComponents.CorridorGenerator;
-import gameLogicComponents.MonsterGenerator;
-import gameLogicComponents.RoomDescriptionFactory;
-import gameLogicComponents.RoomGenerator;
+import dungeonComponentGenerators.CorridorGenerator;
+import dungeonComponentGenerators.MonsterGenerator;
+import dungeonComponentGenerators.RoomGenerator;
+import dungeonComponentGenerators.TerminalGenerator;
+import factories.CoordinateFactory;
+import factories.RoomDescriptionFactory;
 import interfaces.ICoordFactory;
 import interfaces.ICorridorGenerator;
 import interfaces.IMonsterGenerator;
 import interfaces.IRoomDescriptionFactory;
 import interfaces.IRoomGenerator;
+import interfaces.ITerminalGenerator;
 
 /***
  * This Composition class behaves as the dependency injector for the project. Any non system-library
@@ -28,6 +30,7 @@ public class Composition {
 	private IRoomDescriptionFactory roomDescriptionFactory;
 	private IMonsterGenerator monstGen;
 	private IRoomGenerator roomGen;
+	private ITerminalGenerator termGen;
 	
 	public Composition(){
 		rand = new Random();
@@ -36,6 +39,7 @@ public class Composition {
 		corGen = new CorridorGenerator(rand,coordFact);
 		monstGen = new MonsterGenerator(rand);
 		roomGen = new RoomGenerator(roomDescriptionFactory);
+		termGen = new TerminalGenerator(rand);
 	}
 	
 	/***
@@ -58,5 +62,9 @@ public class Composition {
 	
 	public IMonsterGenerator getMonsterGenerator(){
 		return monstGen;
+	}
+	
+	public ITerminalGenerator getTerminalGenerator(){
+		return termGen;
 	}
 }

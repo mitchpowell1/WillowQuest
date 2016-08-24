@@ -1,7 +1,8 @@
-package gameLogicComponents;
+package factories;
 
 import java.util.Random;
 
+import gameLogicComponents.RoomDescription;
 import interfaces.ICollideableRoom;
 import interfaces.ICompareableCoord;
 import interfaces.ICoordFactory;

@@ -1,5 +1,6 @@
-package gameLogicComponents;
+package factories;
 
+import gameLogicComponents.IntCoord;
 import interfaces.ICompareableCoord;
 import interfaces.ICoordFactory;
 

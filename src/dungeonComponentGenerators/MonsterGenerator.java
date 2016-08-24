@@ -1,7 +1,8 @@
-package gameLogicComponents;
+package dungeonComponentGenerators;
 
 import java.util.Random;
 
+import gameLogicComponents.Cell;
 import interfaces.IMonsterGenerator;
 /***
  * Generates monsters in a 2D array of cells.

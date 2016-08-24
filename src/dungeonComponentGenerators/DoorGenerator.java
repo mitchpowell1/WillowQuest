@@ -1,5 +1,6 @@
-package gameLogicComponents;
+package dungeonComponentGenerators;
 
+import gameLogicComponents.Cell;
 import interfaces.IDoorGenerator;
 
 public class DoorGenerator implements IDoorGenerator{

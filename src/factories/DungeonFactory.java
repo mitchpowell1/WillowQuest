@@ -1,21 +1,19 @@
-package gameLogicComponents;
+package factories;
 
-import java.util.ArrayList;
-import java.util.Random;
-
+import gameLogicComponents.Cell;
+import gameLogicComponents.Dungeon;
 import gameSettingComponents.DungeonDensity;
 import gameSettingComponents.MonsterLevels;
-import interfaces.IRoomDescriptionFactory;
 import interfaces.IRoomGenerator;
-import interfaces.ICollideableRoom;
+import interfaces.ITerminalGenerator;
 import interfaces.ICorridorGenerator;
 import interfaces.IMonsterGenerator;
 
 public class DungeonFactory {
-	private Random randomGenerator;
 	private IRoomGenerator roomGenerator;
 	private ICorridorGenerator corridorGenerator;
 	private IMonsterGenerator monsterGenerator;
+	private ITerminalGenerator terminalGenerator;
 	private int roomDensity;
 	private int dungeonWidth;
 	private int dungeonHeight;
@@ -26,9 +24,8 @@ public class DungeonFactory {
 	/***
 	 * Constructor method for a dungeon factory object.
 	 */
-	public DungeonFactory(Random rand, IRoomGenerator roomGen, ICorridorGenerator corGen, 
-			IMonsterGenerator monsterGenerator) {
-		this.randomGenerator = rand;
+	public DungeonFactory(IRoomGenerator roomGen, ICorridorGenerator corGen, 
+			IMonsterGenerator monsterGenerator, ITerminalGenerator termGen) {
 		this.roomGenerator = roomGen;
 		this.corridorGenerator = corGen;
 		this.monsterGenerator = monsterGenerator;
@@ -161,100 +158,17 @@ public class DungeonFactory {
 	}
 
 	/***
-	 * Adds an entrance and exit block to the dungeon. The Entrance and the will
-	 * always be on opposing walls in order to prevent the navigation of the
-	 * maze from being too short.
+	 * Uses the terminal generator object to add an entrance and exit to the dungeon
 	 * 
 	 * @param cellArray
 	 *            the array of cells that an entrance and exit will be added to.
 	 * @return
 	 */
 	private void addEntranceExit(Cell[][] cellArray) {
-		int numRows = cellArray.length;
-		int numCols = cellArray[0].length;
-		boolean ceilings = randomGenerator.nextBoolean();
-		// If the entrance and exit are on the ceiling and floor
-		if (ceilings) {
-			// Decide the position of the entrance
-			boolean enterOnCeiling = randomGenerator.nextBoolean();
-			// If the entrance is on the ceiling
-			if (enterOnCeiling) {
-				addEntranceExitCeiling(cellArray,Cell.ENTRANCE);
-				addEntranceExitFloor(cellArray,Cell.EXIT);
-			} else {
-				addEntranceExitCeiling(cellArray,Cell.EXIT);
-				addEntranceExitFloor(cellArray,Cell.ENTRANCE);
-			}
-			// If the entrance and exit are on the left and right walls
-		} else {
-			boolean enterLeft = randomGenerator.nextBoolean();
-			// If the entrance is on the left
-			if (enterLeft) {
-				// Place the entrances and exits appropriately.
-				addEntranceExitLeft(cellArray, Cell.ENTRANCE);
-				addEntranceExitRight(cellArray, Cell.EXIT);
-			} else {
-				addEntranceExitLeft(cellArray, Cell.EXIT);
-				addEntranceExitRight(cellArray, Cell.ENTRANCE);
-			}
-		}
-	}
-
-	/***
-	 * Adds an entrance or exit to the ceiling, making sure that the entrance or exit
-	 * is connected to either a corridor or a room.
-	 * @param cellArray the array of cells to be manipulated
-	 * @param cell the type of cell to be added (Entrance or Exit).
-	 */
-	private void addEntranceExitCeiling(Cell[][] cellArray, Cell cell){
-		int index = this.randomGenerator.nextInt(dungeonWidth);
-		while(cellArray[1][index] != Cell.ROOM && cellArray[1][index] != Cell.CORRIDOR){
-			index = this.randomGenerator.nextInt(dungeonWidth);
-		}
-		cellArray[0][index] = cell;
-	}
-	
-	/***
-	 * Adds either an entrance or exit to floor, making sure the added cell touches a room or corridor block.
-	 * @param cellArray the array of cells to be manipulated
-	 * @param cell the cell to be added.
-	 */
-	private void addEntranceExitFloor(Cell[][] cellArray, Cell cell){
-		int index = this.randomGenerator.nextInt(dungeonWidth);
-		while(cellArray[dungeonHeight-2][index] != Cell.ROOM && cellArray[cellArray.length-2][index] != Cell.CORRIDOR){
-			index = this.randomGenerator.nextInt(dungeonWidth);
-		}
-		cellArray[dungeonHeight-1][index] = cell;
-	}
-	
-	/***
-	 * Adds an entrance or exit to the left wall, ensuring the entrance/exit touches a room or corridor.
-	 * @param cellArray the array of cells to be manipulated
-	 * @param cell the kind of cell to add.
-	 */
-	private void addEntranceExitLeft(Cell[][] cellArray, Cell cell){
-		int index = this.randomGenerator.nextInt(dungeonHeight);
-		while(cellArray[index][1] != Cell.ROOM && cellArray[index][1] != Cell.CORRIDOR){
-			index = this.randomGenerator.nextInt(dungeonHeight);
-		}
-		cellArray[index][0] = cell;
-	}
-	
-	/***
-	 * Adds either an entrance or an exit to the array of cells.
-	 * @param cellArray the array of cells to be manipulated
-	 * @param cell the type of cell to add.
-	 */
-	private void addEntranceExitRight(Cell[][] cellArray, Cell cell){
-		int index = this.randomGenerator.nextInt(dungeonHeight);
-		while(cellArray[index][dungeonWidth-2] != Cell.ROOM && cellArray[index][dungeonWidth-2] !=Cell.CORRIDOR){
-			index = this.randomGenerator.nextInt(dungeonHeight);
-		}
-		cellArray[index][dungeonWidth-1] = cell;
+		terminalGenerator.generateTerminals(cellArray);
 	}
 	/***
-	 * Programmatically adds rooms to the array of cells based on the room
-	 * density instance variable.
+	 * Uses the room generator object to the dungeon.
 	 * 
 	 * @param cellArray
 	 *            the array of cells to add rooms to.

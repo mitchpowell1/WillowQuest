@@ -1,7 +1,8 @@
-package gameLogicComponents;
+package dungeonComponentGenerators;
 
 import java.util.ArrayList;
 
+import gameLogicComponents.Cell;
 import interfaces.ICollideableRoom;
 import interfaces.IRoomDescriptionFactory;
 import interfaces.IRoomGenerator;

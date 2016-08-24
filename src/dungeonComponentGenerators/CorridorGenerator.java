@@ -1,8 +1,9 @@
-package gameLogicComponents;
+package dungeonComponentGenerators;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import gameLogicComponents.Cell;
 import interfaces.ICompareableCoord;
 import interfaces.ICoordFactory;
 import interfaces.ICorridorGenerator;
