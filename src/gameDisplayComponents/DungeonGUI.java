@@ -62,7 +62,7 @@ public class DungeonGUI extends JFrame{
 	 */
 	private void initContentPanel() {
 		contentPanel = new JPanel();
-		contentLabel = new JLabel("Test");
+		contentLabel = new JLabel("Click below to begin your quest!");
 		contentPanel.add(contentLabel);
 		this.add(contentPanel, BorderLayout.CENTER);
 		contentPanel.revalidate();
