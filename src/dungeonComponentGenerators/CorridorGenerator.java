@@ -40,9 +40,7 @@ public class CorridorGenerator implements ICorridorGenerator {
 			}
 		}
 		generateTerminals();
-		System.out.println("Terminals Generated");
 		generateDoors();
-		System.out.println("Doors Generated");
 		removeDeadEnds();
 	}
 
