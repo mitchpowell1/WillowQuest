@@ -7,6 +7,8 @@ import dungeonComponentGenerators.DoorGenerator;
 import dungeonComponentGenerators.MonsterGenerator;
 import dungeonComponentGenerators.RoomGenerator;
 import dungeonComponentGenerators.TerminalGenerator;
+import dungeonComponentGenerators.TreasureGenerator;
+import dungeonComponentGenerators.WallGenerator;
 import factories.CoordinateFactory;
 import factories.RoomDescriptionFactory;
 import interfaces.ICoordFactory;
@@ -16,6 +18,8 @@ import interfaces.IMonsterGenerator;
 import interfaces.IRoomDescriptionFactory;
 import interfaces.IRoomGenerator;
 import interfaces.ITerminalGenerator;
+import interfaces.ITreasureGenerator;
+import interfaces.IWallGenerator;
 
 /***
  * This Composition class behaves as the dependency injector for the project. Any non system-library
@@ -34,9 +38,12 @@ public class Composition {
 	private IMonsterGenerator monstGen;
 	private IRoomGenerator roomGen;
 	private ITerminalGenerator termGen;
+	private ITreasureGenerator treasGen;
+	private IWallGenerator wallGen;
 	
 	public Composition(){
-		rand = new Random();
+		long seed = (System.currentTimeMillis());
+		rand = new Random(seed); //100: No doors (seems to only be when entrance is to the north
 		coordFact = new CoordinateFactory();
 		roomDescriptionFactory = new RoomDescriptionFactory(coordFact, rand);
 		doorGen = new DoorGenerator(coordFact);
@@ -44,6 +51,8 @@ public class Composition {
 		roomGen = new RoomGenerator(roomDescriptionFactory);
 		termGen = new TerminalGenerator(rand);
 		corGen = new CorridorGenerator(rand,coordFact,doorGen,termGen);
+		treasGen = new TreasureGenerator(rand);
+		wallGen = new WallGenerator();
 
 	}
 	
@@ -71,5 +80,13 @@ public class Composition {
 	
 	public ITerminalGenerator getTerminalGenerator(){
 		return termGen;
+	}
+	
+	public IWallGenerator getWallGenerator(){
+		return wallGen;
+	}
+	
+	public ITreasureGenerator getTreasureGenerator(){
+		return treasGen;
 	}
 }

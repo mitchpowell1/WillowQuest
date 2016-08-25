@@ -3,9 +3,12 @@ package factories;
 import gameLogicComponents.Cell;
 import gameLogicComponents.Dungeon;
 import gameSettingComponents.DungeonDensity;
+import gameSettingComponents.DungeonSize;
 import gameSettingComponents.MonsterLevels;
+import gameSettingComponents.TreasureSettings;
 import interfaces.IRoomGenerator;
-import interfaces.ITerminalGenerator;
+import interfaces.ITreasureGenerator;
+import interfaces.IWallGenerator;
 import interfaces.ICorridorGenerator;
 import interfaces.IMonsterGenerator;
 
@@ -13,6 +16,12 @@ public class DungeonFactory {
 	private IRoomGenerator roomGenerator;
 	private ICorridorGenerator corridorGenerator;
 	private IMonsterGenerator monsterGenerator;
+	private ITreasureGenerator treasureGenerator;
+	private IWallGenerator wallGenerator;
+	private MonsterLevels monsLevel;
+	private DungeonDensity densityLevel;
+	private DungeonSize dungeonSize;
+	private TreasureSettings treasureSet;
 	private int roomDensity;
 	private int dungeonWidth;
 	private int dungeonHeight;
@@ -24,16 +33,49 @@ public class DungeonFactory {
 	 * Constructor method for a dungeon factory object.
 	 */
 	public DungeonFactory(IRoomGenerator roomGen, ICorridorGenerator corGen, 
-			IMonsterGenerator monsterGenerator) {
+		IMonsterGenerator monsterGenerator, IWallGenerator wallGenerator, 
+		ITreasureGenerator treasureGenerator) {
 		this.roomGenerator = roomGen;
 		this.corridorGenerator = corGen;
 		this.monsterGenerator = monsterGenerator;
-		this.dungeonWidth = 50;
-		this.dungeonHeight = 50;
+		this.treasureGenerator = treasureGenerator;
+		this.wallGenerator = wallGenerator;
+		this.monsLevel = MonsterLevels.MEDIUM;
+		this.densityLevel = DungeonDensity.MEDIUM;
+		this.dungeonSize = DungeonSize.MEDIUM;
+		this.treasureSet = TreasureSettings.PIRATE;
+		setSize(dungeonSize);
 		setRoomDensity(DungeonDensity.MEDIUM);
 		setMonsterProb(MonsterLevels.MEDIUM);
+		
 
 
+	}
+	
+	/**
+	 * Set the size of the dungeon
+	 * @param size
+	 */
+	public void setSize(DungeonSize size) {
+		this.dungeonSize = size;
+		setDungeonHeight(size.getRows());
+		setDungeonWidth(size.getCols());
+	}
+	
+	public DungeonSize getDungeonSize(){
+		return this.dungeonSize;
+	}
+
+	public MonsterLevels getMonsterLevel(){
+		return this.monsLevel;
+	}
+	
+	public DungeonDensity getRoomDensity(){
+		return this.densityLevel;
+	}
+	
+	public TreasureSettings getTreasureSettings(){
+		return this.treasureSet;
 	}
 
 	/***
@@ -41,8 +83,13 @@ public class DungeonFactory {
 	 * @param lev the level of monsters.
 	 */
 	public void setMonsterProb(MonsterLevels lev){
+		this.monsLevel = lev;
 		this.monsterCorrProb = lev.getCorrProb();
 		this.monsterRoomProb = lev.getRoomProb();
+	}
+	
+	public void setTreasureSettings(TreasureSettings treas){
+		this.treasureSet = treas;
 	}
 
 	/***
@@ -62,7 +109,12 @@ public class DungeonFactory {
 		addWalls(cells);
 		addCorridors(cells);
 		addMonsters(cells);
+		addTreasure(cells);
 		return new Dungeon(cells);
+	}
+
+	private void addTreasure(Cell[][] cells) {
+		this.treasureGenerator.generateTreasure(cells, treasureSet);
 	}
 
 	/**
@@ -78,30 +130,7 @@ public class DungeonFactory {
 	 * @param cells the array of cells to have walls added.
 	 */
 	private void addWalls(Cell[][] cells) {
-		for(int i = 0; i<cells[0].length; i++){
-			cells[0][i] = Cell.WALL;
-			cells[cells.length-1][i] = Cell.WALL;
-		}
-		for(int row=1; row<cells.length-1; row++){
-			// Every row is bordered by a wall on either side
-			cells[row][0] = Cell.WALL;
-			cells[row][cells[row].length-1] = Cell.WALL;
-			for(int col=1;col<cells[0].length-1; col++){
-				if(cells[row][col] == Cell.STONE){
-					//Stone Cells that border rooms are turned into walls.
-					if(cells[row+1][col] == Cell.ROOM ||
-							cells[row-1][col] == Cell.ROOM ||
-							cells[row][col+1] == Cell.ROOM ||
-							cells[row][col-1] == Cell.ROOM ||
-							cells[row+1][col+1] == Cell.ROOM ||
-							cells[row-1][col-1] == Cell.ROOM ||
-							cells[row+1][col-1] == Cell.ROOM ||
-							cells[row-1][col+1] == Cell.ROOM){
-						cells[row][col] = Cell.WALL;
-					}
-				}
-			}
-		}
+		wallGenerator.generateWalls(cells);
 	}
 
 	/***
@@ -110,6 +139,7 @@ public class DungeonFactory {
 	 * @param newDensity
 	 */
 	public void setRoomDensity(DungeonDensity dens) {
+		this.densityLevel = dens;
 		this.roomDensity = (this.dungeonWidth * this.dungeonHeight) / dens.getDivFactor();
 	}
 

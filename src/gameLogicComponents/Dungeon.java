@@ -47,6 +47,7 @@ public class Dungeon implements IRenderableDungeon{
 	 * Accessor method for the dungeon's cell array.
 	 * @return the array of cells in a dungeon.
 	 */
+	@Override
 	public Cell[][] getCells(){
 		return this.cells;
 	}

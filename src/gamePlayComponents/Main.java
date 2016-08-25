@@ -1,9 +1,9 @@
 package gamePlayComponents;
 
 import gamePlayComponents.Composition;
-import gameSettingComponents.MonsterLevels;
 import factories.DungeonFactory;
-import gameDisplayComponents.DungeonPrinter;
+import gameDisplayComponents.DungeonGUI;
+import gameDisplayComponents.HTMLDungeonPrinter;
 
 public class Main {
 
@@ -12,12 +12,13 @@ public class Main {
 		DungeonFactory fact = new DungeonFactory( 
 				comp.getRoomGenerator(),
 				comp.getCorridorGenerator(),
-				comp.getMonsterGenerator()
+				comp.getMonsterGenerator(),
+				comp.getWallGenerator(),
+				comp.getTreasureGenerator()
 				);
-		DungeonPrinter print = new DungeonPrinter();
-		print.printDungeon(fact.getDungeon());
-		fact.setMonsterProb(MonsterLevels.HIGH);
-		print.printDungeon(fact.getDungeon());
+		HTMLDungeonPrinter print = new HTMLDungeonPrinter();
+		@SuppressWarnings("unused")
+		DungeonGUI gui = new DungeonGUI(print,fact);
 	}
 
 }

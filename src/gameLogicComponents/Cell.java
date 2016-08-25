@@ -8,22 +8,22 @@ import java.awt.Color;
  *
  */
 public enum Cell {
-	CORRIDOR (' ', Color.WHITE),
-	DOOR	('\u25EB', Color.YELLOW),
-	ENTRANCE ('\u25CB', Color.BLUE),
-	EXIT ('\u25CE', Color.CYAN),
-	MONSTER('\u2639', Color.magenta),
-	ROOM (' ', Color.LIGHT_GRAY),
-	STONE ('\u25A4', Color.BLACK),
-	TRAP ('T', Color.RED),
-	TREASURE ('G', Color.GREEN),
-	WALL ('\u25A0', Color.DARK_GRAY);
+	CORRIDOR (" ", Color.WHITE),
+	DOOR	("\u25EB", Color.YELLOW),
+	ENTRANCE ("\u2193", Color.BLUE),
+	EXIT ("\u2193", Color.CYAN),
+	MONSTER("\u2639", Color.magenta),
+	ROOM (" ", Color.LIGHT_GRAY),
+	STONE ("\u25A4", Color.BLACK),
+	TRAP ("T", Color.RED),
+	TREASURE ("$", Color.GREEN),
+	WALL ("\u25A0", Color.DARK_GRAY);
 	
 	/**
 	 * Setting some display variables for each of the different kinds of cells
 	 * to avoid having a lot of switch-case statements in other classes.
 	 */
-	private char character;
+	private String string;
 	private Color color;
 	
 	/***
@@ -31,17 +31,17 @@ public enum Cell {
 	 * @param character character used to represent the cell.
 	 * @param color color used to represent the cell.
 	 */
-	Cell(char character, Color color){
-		this.character = character;
+	Cell(String string, Color color){
+		this.string = string;
 		this.color = color;
 	}
 	
 	/***
-	 * Returns the character associated with the cell for ASCII printing.
+	 * Returns the string associated with the cell for ASCII printing.
 	 * @return the ASCII character for the cell.
 	 */
-	public char getChar(){
-		return this.character;
+	public String getString(){
+		return this.string;
 	}
 	
 	/***

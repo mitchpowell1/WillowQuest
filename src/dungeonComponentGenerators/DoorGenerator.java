@@ -48,8 +48,8 @@ public class DoorGenerator implements IDoorGenerator {
 						ICompareableCoord twoEast = coordFact.getCoord(row, col+2);
 						if(isConnectable(twoEast)){
 							cells[row][col+1] = Cell.DOOR;
-							floodFill(twoEast);
-						}
+								floodFill(twoEast);
+							}
 					}
 					if(potentialDoorLocation(west)){
 						ICompareableCoord twoWest = coordFact.getCoord(row, col-2);
@@ -77,6 +77,7 @@ public class DoorGenerator implements IDoorGenerator {
 		}
 		
 	}
+
 
 	/***
 	 * Method to determine whether or not a cell could be a potential door location
@@ -133,10 +134,12 @@ public class DoorGenerator implements IDoorGenerator {
 		while (!fillQueue.isEmpty()) {
 			// Dequeue a cell from the queue
 			ICompareableCoord currentCell = fillQueue.remove();
+			int currentRow = currentCell.getRow();
+			int currentCol = currentCell.getCol();
 			// Create east and and west markers starting at the position of the
 			// current cell
-			ICompareableCoord east = coordFact.getCoord(currentCell.getRow(), currentCell.getCol());
-			ICompareableCoord west = coordFact.getCoord(currentCell.getRow(), currentCell.getCol());
+			ICompareableCoord east = coordFact.getCoord(currentRow, currentCol);
+			ICompareableCoord west = coordFact.getCoord(currentRow, currentCol);
 			// Move the west marker west until it is over a non-connectable
 			// cell.
 			// If the currentcell is not on the western border
@@ -162,22 +165,26 @@ public class DoorGenerator implements IDoorGenerator {
 			// column
 			for (int i = west.getCol(); i <= east.getCol(); i++) {
 				// Mark the cell as connected
-				if (isConnectable(coordFact.getCoord(currentCell.getRow(), i))) {
-					connected[currentCell.getRow()][i] = true;
+				if (isConnectable(coordFact.getCoord(currentRow, i))) {
+					connected[currentRow][i] = true;
 				}
-				ICompareableCoord north = coordFact.getCoord(currentCell.getRow() - 1, i);
-				ICompareableCoord south = coordFact.getCoord(currentCell.getRow() + 1, i);
+				ICompareableCoord north = coordFact.getCoord(currentRow - 1, i);
+				ICompareableCoord south = coordFact.getCoord(currentRow + 1, i);
 				// If the current cell is not on the northern border of the
 				// dungeon
 				// and the cell to the north of it is connectable
-				if (!isNorthernBorder(currentCell) && isConnectable(north)) {
+				if (!isNorthernBorder(currentCell) && isConnectable(north)
+						&& (cells[currentRow][i] == Cell.CORRIDOR || cells[currentRow][i] ==Cell.ROOM
+						|| cells[currentRow][i] == Cell.ENTRANCE || cells[currentRow][i] == Cell.EXIT)) {
 					// add the cell to the north
 					fillQueue.add(north);
 				}
 				// If the current cell is not on the southern border of the
 				// dungeon
 				// and the cell to the south of it is connectable
-				if (!isSouthernBorder(currentCell) && isConnectable(south)) {
+				if (!isSouthernBorder(currentCell) && isConnectable(south) &&
+						(cells[currentRow][i] == Cell.CORRIDOR || cells[currentRow][i] ==Cell.ROOM
+								|| cells[currentRow][i] == Cell.ENTRANCE || cells[currentRow][i] == Cell.EXIT)) {
 					// add the cell to the south to the fillQueue
 					fillQueue.add(south);
 				}
@@ -233,5 +240,4 @@ public class DoorGenerator implements IDoorGenerator {
 	private boolean isWesternBorder(ICompareableCoord cell) {
 		return cell.getCol() == 0;
 	}
-
 }
