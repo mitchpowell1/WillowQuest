@@ -18,6 +18,12 @@ import gameSettingComponents.DungeonSize;
 import gameSettingComponents.MonsterLevels;
 import gameSettingComponents.TreasureSettings;
 
+/***
+ * Settings frame houses the settings menu for the GUI, and its associted components
+ * and actions.
+ * @author Mitch Powell
+ *
+ */
 @SuppressWarnings("serial")
 public class SettingsFrame extends JFrame{
 	private MonsterLevels monstLevel;

@@ -20,7 +20,6 @@ public class DungeonGUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
-	private JMenuItem saveItem;
 	private JMenuItem settingsItem;
 	private JFrame settingsFrame;
 	private JScrollPane scrollPane;
@@ -97,10 +96,8 @@ public class DungeonGUI extends JFrame{
 	private void initMenu(){
 		this.menuBar = new JMenuBar();
 		this.fileMenu = new JMenu("Dungeon");
-		this.saveItem = new JMenuItem("Save Dungeon");
 		this.settingsItem = new JMenuItem("Dungeon Settings");
 		menuBar.add(fileMenu);
-		fileMenu.add(saveItem);
 		fileMenu.add(settingsItem);
 		settingsItem.addActionListener(new settingsListener());
 	}
