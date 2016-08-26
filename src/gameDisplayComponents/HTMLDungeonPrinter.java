@@ -15,7 +15,6 @@ public class HTMLDungeonPrinter {
 			dungeonString+="<br>";
 		}
 		dungeonString+="</pre></html>";
-		System.out.println(dungeonString);
 		return dungeonString;
 	}
 }
