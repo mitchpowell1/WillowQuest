@@ -1,7 +1,6 @@
 package gameDisplayComponents;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -83,7 +82,6 @@ public class DungeonGUI extends JFrame{
 	private void initContentPanel() {
 		contentPanel = new JPanel();
 		contentLabel = new JLabel("Click below to begin your quest!");
-		contentLabel.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
 		contentPanel.add(contentLabel);
 		this.add(contentPanel, BorderLayout.CENTER);
 		contentPanel.revalidate();
