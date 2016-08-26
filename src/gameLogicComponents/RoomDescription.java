@@ -45,20 +45,20 @@ public class RoomDescription implements ICollideableRoom {
 
 	@Override
 	/***
-	 * Returns the coordinates of the top left cell of the room
-	 * @return top left cell coordinates
-	 */
-	public ICompareableCoord getTopLeft() {
-		return this.topLeft;
-	}
-
-	@Override
-	/***
 	 * Returns the coordinates of the bottom right cell of the room
 	 * @return bottom right cell coordinates
 	 */
 	public ICompareableCoord getBottomRight() {
 		return this.bottomRight;
+	}
+
+	@Override
+	/***
+	 * Returns the coordinates of the top left cell of the room
+	 * @return top left cell coordinates
+	 */
+	public ICompareableCoord getTopLeft() {
+		return this.topLeft;
 	}
 
 }

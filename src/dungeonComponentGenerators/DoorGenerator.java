@@ -20,16 +20,6 @@ public class DoorGenerator implements IDoorGenerator {
 		this.coordFact = coordFact;
 	}
 
-	@Override
-	public void makeDoors(Cell[][] cells) {
-		this.cells = cells;
-		this.dungeonWidth = cells[0].length;
-		this.dungeonHeight = cells.length;
-		initConnected();
-		floodFill(entrance);
-		fillRemaining();
-	}
-
 	/***
 	 * After the main corridor has been connected to the entrance,
 	 * this function iterates through all of the connected cells, sees if they have
@@ -76,50 +66,6 @@ public class DoorGenerator implements IDoorGenerator {
 			}
 		}
 		
-	}
-
-
-	/***
-	 * Method to determine whether or not a cell could be a potential door location
-	 * @param cell
-	 * @return
-	 */
-	private boolean potentialDoorLocation(ICompareableCoord cell){
-		return(cells[cell.getRow()][cell.getCol()] == Cell.WALL
-				&& !isBorderWall(cell));
-	}
-	/***
-	 * Instantiate the 2D connected array as false for every cell in the
-	 * dungeon.
-	 */
-	private void initConnected() {
-		connected = new boolean[dungeonHeight][dungeonWidth];
-		for (int row = 0; row < dungeonHeight; row++) {
-			for (int col = 0; col < dungeonWidth; col++) {
-				if (cells[row][col] == Cell.ENTRANCE) {
-					this.entrance = coordFact.getCoord(row, col);
-				}
-				connected[row][col] = false;
-			}
-		}
-	}
-
-	/***
-	 * Evaluates a cell and decides whether or not it is a connectable cell
-	 * 
-	 * @param cell
-	 *            the cell whose connectability is being decided
-	 * @return whether or not the cell is connectable.
-	 */
-	private boolean isConnectable(ICompareableCoord cell) {
-		int row = cell.getRow();
-		int col = cell.getCol();
-		// A cell is connectable if it is a room, a corridor, an entrance, or an
-		// exit
-		// and it has not already been connected.
-		return ((cells[row][col] == Cell.ROOM || cells[row][col] == Cell.CORRIDOR
-		// cells[row][col] == Cell.ENTRANCE ||
-		/* cells[row][col] == Cell.EXIT */) && !connected[row][col]);
 	}
 
 	/***
@@ -193,6 +139,22 @@ public class DoorGenerator implements IDoorGenerator {
 		}
 	}
 
+
+	/***
+	 * Instantiate the 2D connected array as false for every cell in the
+	 * dungeon.
+	 */
+	private void initConnected() {
+		connected = new boolean[dungeonHeight][dungeonWidth];
+		for (int row = 0; row < dungeonHeight; row++) {
+			for (int col = 0; col < dungeonWidth; col++) {
+				if (cells[row][col] == Cell.ENTRANCE) {
+					this.entrance = coordFact.getCoord(row, col);
+				}
+				connected[row][col] = false;
+			}
+		}
+	}
 	/***
 	 * Evaluates a cell and returns whether or not the cell is a bordering wall
 	 * of the dungeon
@@ -203,6 +165,33 @@ public class DoorGenerator implements IDoorGenerator {
 	 */
 	private boolean isBorderWall(ICompareableCoord cell) {
 		return (isNorthernBorder(cell) || isSouthernBorder(cell) || isEasternBorder(cell) || isWesternBorder(cell));
+	}
+
+	/***
+	 * Evaluates a cell and decides whether or not it is a connectable cell
+	 * 
+	 * @param cell
+	 *            the cell whose connectability is being decided
+	 * @return whether or not the cell is connectable.
+	 */
+	private boolean isConnectable(ICompareableCoord cell) {
+		int row = cell.getRow();
+		int col = cell.getCol();
+		// A cell is connectable if it is a room, a corridor, an entrance, or an
+		// exit
+		// and it has not already been connected.
+		return ((cells[row][col] == Cell.ROOM || cells[row][col] == Cell.CORRIDOR
+		// cells[row][col] == Cell.ENTRANCE ||
+		/* cells[row][col] == Cell.EXIT */) && !connected[row][col]);
+	}
+
+	/***
+	 * Checks if the cell is on the eastern border of the dungeon
+	 * @param cell the cell to be checked
+	 * @return whether or not the cell is on the southern border of the screen.
+	 */
+	private boolean isEasternBorder(ICompareableCoord cell) {
+		return cell.getCol() == dungeonWidth - 1;
 	}
 
 	/***
@@ -224,20 +213,31 @@ public class DoorGenerator implements IDoorGenerator {
 	}
 
 	/***
-	 * Checks if the cell is on the eastern border of the dungeon
-	 * @param cell the cell to be checked
-	 * @return whether or not the cell is on the southern border of the screen.
-	 */
-	private boolean isEasternBorder(ICompareableCoord cell) {
-		return cell.getCol() == dungeonWidth - 1;
-	}
-
-	/***
 	 * Checks if the cell is on the western border of the dungeon
 	 * @param cell the cell to be checked
 	 * @return whether or not the cell is on the western border of the screen.
 	 */
 	private boolean isWesternBorder(ICompareableCoord cell) {
 		return cell.getCol() == 0;
+	}
+
+	@Override
+	public void makeDoors(Cell[][] cells) {
+		this.cells = cells;
+		this.dungeonWidth = cells[0].length;
+		this.dungeonHeight = cells.length;
+		initConnected();
+		floodFill(entrance);
+		fillRemaining();
+	}
+
+	/***
+	 * Method to determine whether or not a cell could be a potential door location
+	 * @param cell
+	 * @return
+	 */
+	private boolean potentialDoorLocation(ICompareableCoord cell){
+		return(cells[cell.getRow()][cell.getCol()] == Cell.WALL
+				&& !isBorderWall(cell));
 	}
 }

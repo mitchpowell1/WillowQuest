@@ -18,14 +18,6 @@ public class TerminalGenerator implements ITerminalGenerator {
 		randomGenerator = randGen;
 	}
 
-	@Override
-	public void generateTerminals(Cell[][] cells) {
-		this.dungeonWidth = cells[0].length;
-		this.dungeonHeight = cells.length;
-		addEntranceExitCeiling(cells, Cell.ENTRANCE);
-		addEntranceExitFloor(cells, Cell.EXIT);
-	}
-	
 	/***
 	 * Adds an entrance or exit to the ceiling, making sure that the entrance or exit
 	 * is connected to either a corridor or a room.
@@ -51,6 +43,14 @@ public class TerminalGenerator implements ITerminalGenerator {
 			index = this.randomGenerator.nextInt(dungeonWidth);
 		}
 		cellArray[dungeonHeight-1][index] = cell;
+	}
+	
+	@Override
+	public void generateTerminals(Cell[][] cells) {
+		this.dungeonWidth = cells[0].length;
+		this.dungeonHeight = cells.length;
+		addEntranceExitCeiling(cells, Cell.ENTRANCE);
+		addEntranceExitFloor(cells, Cell.EXIT);
 	}
 	
 }

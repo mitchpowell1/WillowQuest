@@ -26,25 +26,47 @@ import gameSettingComponents.TreasureSettings;
  */
 @SuppressWarnings("serial")
 public class SettingsFrame extends JFrame{
+	private class cancelButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			fact.setSize(size);
+			fact.setRoomDensity(density);
+			fact.setMonsterProb(monstLevel);
+			fact.setTreasureSettings(treasure);
+			dispose();
+		}
+		
+	}
+	private class submitButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			dispose();
+		}
+		
+	}
 	private MonsterLevels monstLevel;
 	private DungeonDensity density;
+	
 	private TreasureSettings treasure;
 	private DungeonSize size;
-	
 	private DungeonFactory fact;
 	private JPanel settingsContent;
 	private JPanel densityContent;
 	private JPanel monsterContent;
 	private JPanel sizeContent;
+
 	private JPanel treasureContent;
 	private JPanel buttonPanel;
-
 	private ButtonGroup monsterSettings;
 	private ButtonGroup sizeSettings;
 	private ButtonGroup treasureSettings;
 	private ButtonGroup densitySettings;
 	private JButton select;
+	
 	private JButton cancel;
+
 	/**
 	 * Instantiate the settings Frame
 	 * @param fact
@@ -75,52 +97,6 @@ public class SettingsFrame extends JFrame{
 		select.addActionListener(new submitButtonListener());
 		buttonPanel.add(select);
 		buttonPanel.add(cancel);
-	}
-
-	public void initMonsterSettings(){
-		this.monsterContent = new JPanel();
-		monsterContent.setBorder(BorderFactory.createTitledBorder("Monsters"));
-		this.monsterSettings = new ButtonGroup();
-		//Instantiate monster buttons
-		JRadioButton lowMonsters = new JRadioButton("Low");
-		JRadioButton medMonsters = new JRadioButton("Medium");
-		JRadioButton highMonsters = new JRadioButton("High");
-		//Set selected monster settings
-		lowMonsters.setSelected(fact.getMonsterLevel() == MonsterLevels.LOW);
-		medMonsters.setSelected(fact.getMonsterLevel() == MonsterLevels.MEDIUM);
-		highMonsters.setSelected(fact.getMonsterLevel() == MonsterLevels.HIGH);
-		
-		lowMonsters.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fact.setMonsterProb(MonsterLevels.LOW);
-			}
-			
-		});
-		
-		medMonsters.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				fact.setMonsterProb(MonsterLevels.MEDIUM);
-			}
-		});
-		
-		highMonsters.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				fact.setMonsterProb(MonsterLevels.HIGH);
-			}
-		});
-		//Add buttons to button group
-		monsterSettings.add(lowMonsters);
-		monsterSettings.add(medMonsters);
-		monsterSettings.add(highMonsters);
-		//Add buttons to panel
-		monsterContent.add(lowMonsters);
-		monsterContent.add(medMonsters);
-		monsterContent.add(highMonsters);
-		settingsContent.add(monsterContent);
 	}
 	
 	public void initDensitySettings(){
@@ -169,6 +145,52 @@ public class SettingsFrame extends JFrame{
 		densityContent.add(highDensity);
 		
 		settingsContent.add(densityContent);
+	}
+	
+	public void initMonsterSettings(){
+		this.monsterContent = new JPanel();
+		monsterContent.setBorder(BorderFactory.createTitledBorder("Monsters"));
+		this.monsterSettings = new ButtonGroup();
+		//Instantiate monster buttons
+		JRadioButton lowMonsters = new JRadioButton("Low");
+		JRadioButton medMonsters = new JRadioButton("Medium");
+		JRadioButton highMonsters = new JRadioButton("High");
+		//Set selected monster settings
+		lowMonsters.setSelected(fact.getMonsterLevel() == MonsterLevels.LOW);
+		medMonsters.setSelected(fact.getMonsterLevel() == MonsterLevels.MEDIUM);
+		highMonsters.setSelected(fact.getMonsterLevel() == MonsterLevels.HIGH);
+		
+		lowMonsters.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fact.setMonsterProb(MonsterLevels.LOW);
+			}
+			
+		});
+		
+		medMonsters.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				fact.setMonsterProb(MonsterLevels.MEDIUM);
+			}
+		});
+		
+		highMonsters.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				fact.setMonsterProb(MonsterLevels.HIGH);
+			}
+		});
+		//Add buttons to button group
+		monsterSettings.add(lowMonsters);
+		monsterSettings.add(medMonsters);
+		monsterSettings.add(highMonsters);
+		//Add buttons to panel
+		monsterContent.add(lowMonsters);
+		monsterContent.add(medMonsters);
+		monsterContent.add(highMonsters);
+		settingsContent.add(monsterContent);
 	}
 	
 	public void initSizeSettings(){
@@ -271,27 +293,5 @@ public class SettingsFrame extends JFrame{
 		treasureContent.add(kingButton);
 		
 		settingsContent.add(treasureContent);
-	}
-	
-	private class submitButtonListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			dispose();
-		}
-		
-	}
-	
-	private class cancelButtonListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			fact.setSize(size);
-			fact.setRoomDensity(density);
-			fact.setMonsterProb(monstLevel);
-			fact.setTreasureSettings(treasure);
-			dispose();
-		}
-		
 	}
 }

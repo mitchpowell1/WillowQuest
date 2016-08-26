@@ -45,85 +45,11 @@ public class CorridorGenerator implements ICorridorGenerator {
 	}
 
 	/***
-	 * Iterates through all the cells, Identifying and then eliminating dead
-	 * ends
-	 */
-	private void removeDeadEnds() {
-		int dungeonHeight = cells.length;
-		int dungeonWidth = cells[0].length;
-		for (int row = 1; row < dungeonHeight - 1; row++) {
-			for (int col = 1; col < dungeonWidth - 1; col++) {
-				if (isDeadEnd(row, col)) {
-					weedDeadEnd(row, col);
-				}
-			}
-		}
-	}
-
-	/***
-	 * Once a dead end has been identified, this method reduces the dead end
-	 * corridor until it is no longer a dead end.
-	 * 
-	 * @param row
-	 * @param col
-	 */
-	private void weedDeadEnd(int row, int col) {
-		int newRow = row;
-		int newCol = col;
-		while (isDeadEnd(newRow, newCol)) {
-			cells[newRow][newCol] = Cell.STONE;
-			Cell north = cells[newRow - 1][newCol];
-			Cell south = cells[newRow + 1][newCol];
-			Cell east = cells[newRow][newCol + 1];
-			if (north == Cell.CORRIDOR || north == Cell.DOOR) {
-				newRow--;
-			} else if (south == Cell.CORRIDOR || south == Cell.DOOR) {
-				newRow++;
-			} else if (east == Cell.CORRIDOR || east == Cell.DOOR) {
-				newCol++;
-			} else {
-				newCol--;
-			}
-		}
-	}
-
-	/***
-	 * Checks if a cell at a row and column index is a dead end
-	 * 
-	 * @param row
-	 *            the row index
-	 * @param col
-	 *            the column index
-	 * @return whether or not the cell is a dead end corridor.
-	 */
-	private boolean isDeadEnd(int row, int col) {
-		if (cells[row][col] == Cell.CORRIDOR) {
-			Cell[] neighbors = { cells[row - 1][col], cells[row + 1][col], cells[row][col + 1], cells[row][col - 1] };
-			int usefulNeighbors = 0;
-			for (Cell cell : neighbors) {
-				if (cell == Cell.CORRIDOR || cell == Cell.DOOR || cell == Cell.ENTRANCE || cell == Cell.EXIT) {
-					usefulNeighbors++;
-				}
-			}
-			return usefulNeighbors < 2;
-
-		}
-		return false;
-	}
-
-	/***
 	 * Use the door generator object to create some doors.
 	 */
 	private void generateDoors() {
 		doorGen.makeDoors(cells);
 
-	}
-
-	/***
-	 * Use the terminal generator to create some doors.
-	 */
-	private void generateTerminals() {
-		termGen.generateTerminals(cells);
 	}
 
 	/***
@@ -171,6 +97,13 @@ public class CorridorGenerator implements ICorridorGenerator {
 				}
 			}
 		}
+	}
+
+	/***
+	 * Use the terminal generator to create some doors.
+	 */
+	private void generateTerminals() {
+		termGen.generateTerminals(cells);
 	}
 
 	/**
@@ -234,6 +167,73 @@ public class CorridorGenerator implements ICorridorGenerator {
 				} else {
 					visited[row][col] = false;
 				}
+			}
+		}
+	}
+
+	/***
+	 * Checks if a cell at a row and column index is a dead end
+	 * 
+	 * @param row
+	 *            the row index
+	 * @param col
+	 *            the column index
+	 * @return whether or not the cell is a dead end corridor.
+	 */
+	private boolean isDeadEnd(int row, int col) {
+		if (cells[row][col] == Cell.CORRIDOR) {
+			Cell[] neighbors = { cells[row - 1][col], cells[row + 1][col], cells[row][col + 1], cells[row][col - 1] };
+			int usefulNeighbors = 0;
+			for (Cell cell : neighbors) {
+				if (cell == Cell.CORRIDOR || cell == Cell.DOOR || cell == Cell.ENTRANCE || cell == Cell.EXIT) {
+					usefulNeighbors++;
+				}
+			}
+			return usefulNeighbors < 2;
+
+		}
+		return false;
+	}
+
+	/***
+	 * Iterates through all the cells, Identifying and then eliminating dead
+	 * ends
+	 */
+	private void removeDeadEnds() {
+		int dungeonHeight = cells.length;
+		int dungeonWidth = cells[0].length;
+		for (int row = 1; row < dungeonHeight - 1; row++) {
+			for (int col = 1; col < dungeonWidth - 1; col++) {
+				if (isDeadEnd(row, col)) {
+					weedDeadEnd(row, col);
+				}
+			}
+		}
+	}
+
+	/***
+	 * Once a dead end has been identified, this method reduces the dead end
+	 * corridor until it is no longer a dead end.
+	 * 
+	 * @param row
+	 * @param col
+	 */
+	private void weedDeadEnd(int row, int col) {
+		int newRow = row;
+		int newCol = col;
+		while (isDeadEnd(newRow, newCol)) {
+			cells[newRow][newCol] = Cell.STONE;
+			Cell north = cells[newRow - 1][newCol];
+			Cell south = cells[newRow + 1][newCol];
+			Cell east = cells[newRow][newCol + 1];
+			if (north == Cell.CORRIDOR || north == Cell.DOOR) {
+				newRow--;
+			} else if (south == Cell.CORRIDOR || south == Cell.DOOR) {
+				newRow++;
+			} else if (east == Cell.CORRIDOR || east == Cell.DOOR) {
+				newCol++;
+			} else {
+				newCol--;
 			}
 		}
 	}

@@ -8,6 +8,6 @@ package interfaces;
  */
 public interface ICollideableRoom {
 	public boolean collidesWith(ICollideableRoom room);
-	public ICompareableCoord getTopLeft();
 	public ICompareableCoord getBottomRight();
+	public ICompareableCoord getTopLeft();
 }

@@ -19,18 +19,18 @@ public enum MonsterLevels {
 	}
 	
 	/***
-	 * Get the probability that a room block will have a monster.
-	 * @return room block probability level
-	 */
-	public double getRoomProb(){
-		return this.roomProb;
-	}
-	
-	/***
 	 * Get the probability that a corridor block will have a monster.
 	 * @return corridor block probability level.
 	 */
 	public double getCorrProb(){
 		return this.corrProb;
+	}
+	
+	/***
+	 * Get the probability that a room block will have a monster.
+	 * @return room block probability level
+	 */
+	public double getRoomProb(){
+		return this.roomProb;
 	}
 }

@@ -17,6 +17,35 @@ import javax.swing.ScrollPaneConstants;
 import factories.DungeonFactory;
 
 public class DungeonGUI extends JFrame{
+	/***
+	 * Generates a new dungeon
+	 * @author Mitch Powell
+	 *
+	 */
+	private class generateButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//Print an html dungeon representation to the contentLabel
+			contentLabel.setText(print.printDungeon(fact.getDungeon()));
+			contentPanel.revalidate();
+		}
+		
+	}
+	/***
+	 * Opens the settings menu
+	 * @author Mitch Powell
+	 *
+	 */
+	private class settingsListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			settingsFrame = new SettingsFrame(fact);
+			settingsFrame.setVisible(true);
+		}
+		
+	}
 	private static final long serialVersionUID = 1L;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
@@ -27,9 +56,11 @@ public class DungeonGUI extends JFrame{
 	private JPanel buttonPanel;
 	private JLabel contentLabel;
 	private JButton genButton;
-	private HTMLDungeonPrinter print;
-	private DungeonFactory fact;
 	
+	private HTMLDungeonPrinter print;
+	
+	private DungeonFactory fact;
+
 	/***
 	 * Construct a new swing Dungeon GUI
 	 */
@@ -44,18 +75,6 @@ public class DungeonGUI extends JFrame{
 		initGenerateButton();
 		revalidate();
 	}
-	
-	/***
-	 * Initialize the dungeon generation button and add an event listener.
-	 */
-	private void initGenerateButton() {
-		buttonPanel = new JPanel();
-		genButton = new JButton("Generate Dungeon!");
-		buttonPanel.add(genButton, BorderLayout.EAST);
-		genButton.addActionListener(new generateButtonListener());
-		this.add(buttonPanel, BorderLayout.SOUTH);
-		
-	}
 
 	/***
 	 * Initialize the content of the frame.
@@ -69,7 +88,19 @@ public class DungeonGUI extends JFrame{
 		
 		
 	}
-
+	
+	/***
+	 * Initialize the dungeon generation button and add an event listener.
+	 */
+	private void initGenerateButton() {
+		buttonPanel = new JPanel();
+		genButton = new JButton("Generate Dungeon!");
+		buttonPanel.add(genButton, BorderLayout.EAST);
+		genButton.addActionListener(new generateButtonListener());
+		this.add(buttonPanel, BorderLayout.SOUTH);
+		
+	}
+	
 	/***
 	 * Initialize the frame
 	 */
@@ -80,14 +111,6 @@ public class DungeonGUI extends JFrame{
 		this.setLayout(new BorderLayout());
 		this.setVisible(true);
 		this.setJMenuBar(menuBar);
-	}
-	
-	/***
-	 * Create the settings menu frame
-	 */
-	private void initSettingsFrame(){
-		this.settingsFrame = new SettingsFrame(fact);
-		
 	}
 	
 	/***
@@ -114,33 +137,10 @@ public class DungeonGUI extends JFrame{
 	}
 	
 	/***
-	 * Opens the settings menu
-	 * @author Mitch Powell
-	 *
+	 * Create the settings menu frame
 	 */
-	private class settingsListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			settingsFrame = new SettingsFrame(fact);
-			settingsFrame.setVisible(true);
-		}
-		
-	}
-	
-	/***
-	 * Generates a new dungeon
-	 * @author Mitch Powell
-	 *
-	 */
-	private class generateButtonListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			//Print an html dungeon representation to the contentLabel
-			contentLabel.setText(print.printDungeon(fact.getDungeon()));
-			contentPanel.revalidate();
-		}
+	private void initSettingsFrame(){
+		this.settingsFrame = new SettingsFrame(fact);
 		
 	}
 }

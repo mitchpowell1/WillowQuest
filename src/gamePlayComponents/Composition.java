@@ -56,6 +56,14 @@ public class Composition {
 
 	}
 	
+	public ICorridorGenerator getCorridorGenerator(){
+		return corGen;
+	}
+	
+	public IMonsterGenerator getMonsterGenerator(){
+		return monstGen;
+	}
+	
 	/***
 	 * Here I will use a single global random number generator to make reproducing errors
 	 * simple.
@@ -70,23 +78,15 @@ public class Composition {
 		return roomGen;
 	}
 	
-	public ICorridorGenerator getCorridorGenerator(){
-		return corGen;
-	}
-	
-	public IMonsterGenerator getMonsterGenerator(){
-		return monstGen;
-	}
-	
 	public ITerminalGenerator getTerminalGenerator(){
 		return termGen;
 	}
 	
-	public IWallGenerator getWallGenerator(){
-		return wallGen;
-	}
-	
 	public ITreasureGenerator getTreasureGenerator(){
 		return treasGen;
+	}
+	
+	public IWallGenerator getWallGenerator(){
+		return wallGen;
 	}
 }

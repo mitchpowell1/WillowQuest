@@ -24,12 +24,14 @@ public class IntCoord implements ICompareableCoord{
 	}
 	
 	/***
-	 * Get the x coordinate of the coordinate pair
-	 * @return the x-coordinate
+	 * Evaluates whether or not this object is to the bottom right relative to
+	 * another object
+	 * @param other the integer coordinate object for comparison.
+	 * @return the "bottomRightness" of this object compared to the other.
 	 */
 	@Override
-	public int getRow(){
-		return this.x;
+	public boolean bottomRightOf(ICompareableCoord other){
+		return this.x > other.getRow() && this.y < other.getCol();
 	}
 	
 	/***
@@ -41,14 +43,23 @@ public class IntCoord implements ICompareableCoord{
 		return this.y;
 	}
 	
+	/***
+	 * Get the x coordinate of the coordinate pair
+	 * @return the x-coordinate
+	 */
 	@Override
-	public void setRow(int newRow){
-		this.x = newRow;
+	public int getRow(){
+		return this.x;
 	}
 	
 	@Override
 	public void setCol(int newCol){
 		this.y = newCol;
+	}
+	
+	@Override
+	public void setRow(int newRow){
+		this.x = newRow;
 	}
 	
 	/***
@@ -60,17 +71,6 @@ public class IntCoord implements ICompareableCoord{
 	@Override
 	public boolean topLeftOf(ICompareableCoord other){
 		return this.x < other.getRow() && this.y > other.getCol();
-	}
-	
-	/***
-	 * Evaluates whether or not this object is to the bottom right relative to
-	 * another object
-	 * @param other the integer coordinate object for comparison.
-	 * @return the "bottomRightness" of this object compared to the other.
-	 */
-	@Override
-	public boolean bottomRightOf(ICompareableCoord other){
-		return this.x > other.getRow() && this.y < other.getCol();
 	}
 
 }

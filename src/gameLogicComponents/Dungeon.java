@@ -28,11 +28,12 @@ public class Dungeon implements IRenderableDungeon{
 	}
 	
 	/***
-	 * Accesser method for the width of the dungeon.
-	 * @return the width of the dungeon in cells
+	 * Accessor method for the dungeon's cell array.
+	 * @return the array of cells in a dungeon.
 	 */
-	public int getWidth(){
-		return this.width;
+	@Override
+	public Cell[][] getCells(){
+		return this.cells;
 	}
 	
 	/***
@@ -44,11 +45,10 @@ public class Dungeon implements IRenderableDungeon{
 	}
 	
 	/***
-	 * Accessor method for the dungeon's cell array.
-	 * @return the array of cells in a dungeon.
+	 * Accesser method for the width of the dungeon.
+	 * @return the width of the dungeon in cells
 	 */
-	@Override
-	public Cell[][] getCells(){
-		return this.cells;
+	public int getWidth(){
+		return this.width;
 	}
 }

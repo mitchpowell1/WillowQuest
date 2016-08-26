@@ -53,63 +53,47 @@ public class DungeonFactory {
 	}
 	
 	/**
-	 * Set the size of the dungeon
-	 * @param size
+	 * Generate dungeon corridors.
+	 * @param cells
 	 */
-	public void setSize(DungeonSize size) {
-		this.dungeonSize = size;
-		setDungeonHeight(size.getRows());
-		setDungeonWidth(size.getCols());
+	private void addCorridors(Cell[][] cells) {
+		this.corridorGenerator.generateCorridors(cells);	
 	}
 	
-	/**
-	 * Get the size of the dungeon
-	 * @return the size of the dungeon
+	/***
+	 * Populate the dungeon with monsters based upon the dungeon factory's
+	 * Monster level
+	 * @param cellArray
 	 */
-	public DungeonSize getDungeonSize(){
-		return this.dungeonSize;
-	}
-
-	/**
-	 * Get the current monster level of the dungeon
-	 * @return the monster level of the dungeon
-	 */
-	public MonsterLevels getMonsterLevel(){
-		return this.monsLevel;
-	}
-	
-	/**
-	 * Get the current room density setting for the dungeon
-	 * @return current room density
-	 */
-	public DungeonDensity getRoomDensity(){
-		return this.densityLevel;
-	}
-	
-	/**
-	 * Get the current treasure setting for the dungeon factory
-	 * @return the dungeon factory's treasure settings.
-	 */
-	public TreasureSettings getTreasureSettings(){
-		return this.treasureSet;
+	private void addMonsters(Cell[][] cellArray) {
+		this.monsterGenerator.addMonsters(cellArray,
+				this.monsterRoomProb, this.monsterCorrProb);
 	}
 
 	/***
-	 * Sets the probabilities of monsters occurring in rooms and corridors.
-	 * @param lev the level of monsters.
+	 * Uses the room generator object to the dungeon.
+	 * 
+	 * @param cellArray
+	 *            the array of cells to add rooms to.
 	 */
-	public void setMonsterProb(MonsterLevels lev){
-		this.monsLevel = lev;
-		this.monsterCorrProb = lev.getCorrProb();
-		this.monsterRoomProb = lev.getRoomProb();
+	private void addRooms(Cell[][] cellArray) {
+		this.roomGenerator.generateRooms(cellArray, this.roomDensity);
 	}
 	
 	/**
-	 * Update the treasure settings
-	 * @param treas the new treasure settings.
+	 * Calls the treasure generator to add treasure to the dungeon.
+	 * @param cells
 	 */
-	public void setTreasureSettings(TreasureSettings treas){
-		this.treasureSet = treas;
+	private void addTreasure(Cell[][] cells) {
+		this.treasureGenerator.generateTreasure(cells, treasureSet);
+	}
+	
+	/***
+	 * Adds wall blocks to border the perimeter of the dungeon and border rooms.
+	 * @param cells the array of cells to have walls added.
+	 */
+	private void addWalls(Cell[][] cells) {
+		wallGenerator.generateWalls(cells);
 	}
 
 	/***
@@ -132,65 +116,37 @@ public class DungeonFactory {
 		addTreasure(cells);
 		return new Dungeon(cells);
 	}
-
-	/**
-	 * Calls the treasure generator to add treasure to the dungeon.
-	 * @param cells
-	 */
-	private void addTreasure(Cell[][] cells) {
-		this.treasureGenerator.generateTreasure(cells, treasureSet);
-	}
-
-	/**
-	 * Generate dungeon corridors.
-	 * @param cells
-	 */
-	private void addCorridors(Cell[][] cells) {
-		this.corridorGenerator.generateCorridors(cells);	
-	}
-
-	/***
-	 * Adds wall blocks to border the perimeter of the dungeon and border rooms.
-	 * @param cells the array of cells to have walls added.
-	 */
-	private void addWalls(Cell[][] cells) {
-		wallGenerator.generateWalls(cells);
-	}
-
-	/***
-	 * Adjusts the density of the dungeon based on it's area.
-	 * 
-	 * @param newDensity
-	 */
-	public void setRoomDensity(DungeonDensity dens) {
-		this.densityLevel = dens;
-		this.roomDensity = (this.dungeonWidth * this.dungeonHeight) / dens.getDivFactor();
-	}
-
-	/***
-	 * Adjusts the width of the dungeon.
-	 * @param newWidth
-	 */
-	public void setDungeonWidth(int newWidth) {
-		this.dungeonWidth = newWidth;
-	}
-
-	/***
-	 * Adjusts the height of the dungeon
-	 * @param newHeight
-	 */
-	public void setDungeonHeight(int newHeight) {
-		this.dungeonHeight = newHeight;
-	}
 	
-	/***
-	 * Populate the dungeon with monsters based upon the dungeon factory's
-	 * Monster level
-	 * @param cellArray
+	/**
+	 * Get the size of the dungeon
+	 * @return the size of the dungeon
 	 */
-	private void addMonsters(Cell[][] cellArray) {
-		this.monsterGenerator.addMonsters(cellArray,
-				this.monsterRoomProb, this.monsterCorrProb);
+	public DungeonSize getDungeonSize(){
+		return this.dungeonSize;
+	}
+
+	/**
+	 * Get the current monster level of the dungeon
+	 * @return the monster level of the dungeon
+	 */
+	public MonsterLevels getMonsterLevel(){
+		return this.monsLevel;
+	}
+
+	/**
+	 * Get the current room density setting for the dungeon
+	 * @return current room density
+	 */
+	public DungeonDensity getRoomDensity(){
+		return this.densityLevel;
+	}
+
+	/**
+	 * Get the current treasure setting for the dungeon factory
+	 * @return the dungeon factory's treasure settings.
+	 */
+	public TreasureSettings getTreasureSettings(){
+		return this.treasureSet;
 	}
 
 	/***
@@ -214,12 +170,56 @@ public class DungeonFactory {
 	}
 
 	/***
-	 * Uses the room generator object to the dungeon.
-	 * 
-	 * @param cellArray
-	 *            the array of cells to add rooms to.
+	 * Adjusts the height of the dungeon
+	 * @param newHeight
 	 */
-	private void addRooms(Cell[][] cellArray) {
-		this.roomGenerator.generateRooms(cellArray, this.roomDensity);
+	public void setDungeonHeight(int newHeight) {
+		this.dungeonHeight = newHeight;
+	}
+
+	/***
+	 * Adjusts the width of the dungeon.
+	 * @param newWidth
+	 */
+	public void setDungeonWidth(int newWidth) {
+		this.dungeonWidth = newWidth;
+	}
+
+	/***
+	 * Sets the probabilities of monsters occurring in rooms and corridors.
+	 * @param lev the level of monsters.
+	 */
+	public void setMonsterProb(MonsterLevels lev){
+		this.monsLevel = lev;
+		this.monsterCorrProb = lev.getCorrProb();
+		this.monsterRoomProb = lev.getRoomProb();
+	}
+	
+	/***
+	 * Adjusts the density of the dungeon based on it's area.
+	 * 
+	 * @param newDensity
+	 */
+	public void setRoomDensity(DungeonDensity dens) {
+		this.densityLevel = dens;
+		this.roomDensity = (this.dungeonWidth * this.dungeonHeight) / dens.getDivFactor();
+	}
+
+	/**
+	 * Set the size of the dungeon
+	 * @param size
+	 */
+	public void setSize(DungeonSize size) {
+		this.dungeonSize = size;
+		setDungeonHeight(size.getRows());
+		setDungeonWidth(size.getCols());
+	}
+
+	/**
+	 * Update the treasure settings
+	 * @param treas the new treasure settings.
+	 */
+	public void setTreasureSettings(TreasureSettings treas){
+		this.treasureSet = treas;
 	}
 }

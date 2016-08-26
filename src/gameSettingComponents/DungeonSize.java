@@ -13,11 +13,11 @@ public enum DungeonSize {
 		this.cols = cols;
 	}
 	
-	public int getRows(){
-		return this.rows;
-	}
-	
 	public int getCols(){
 		return this.cols;
+	}
+	
+	public int getRows(){
+		return this.rows;
 	}
 }

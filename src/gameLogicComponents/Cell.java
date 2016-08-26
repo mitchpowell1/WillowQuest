@@ -37,18 +37,18 @@ public enum Cell {
 	}
 	
 	/***
-	 * Returns the string associated with the cell for ASCII printing.
-	 * @return the ASCII character for the cell.
-	 */
-	public String getString(){
-		return this.string;
-	}
-	
-	/***
 	 * Returns the color associated with the cell for graphical printing.
 	 * @return  the color for the cell.
 	 */
 	public Color getColor(){
 		return this.color;
+	}
+	
+	/***
+	 * Returns the string associated with the cell for ASCII printing.
+	 * @return the ASCII character for the cell.
+	 */
+	public String getString(){
+		return this.string;
 	}
 }
