@@ -17,3 +17,11 @@ any way that it sees fit. This is conducive to the maintainability, and unit-tes
 of the project.
 
 All source code can be viewed at my public GitHub account at http://www.github.com/mitchpowell1/WillowQuest
+
+Note: I have had a friend tell me that he has had some issues with the spacing in the display. I have
+added an alternative version that replaces empty hallways (previously space characters) with a white
+square. Hopefully that will fix the issue (I can't reproduce it on my machine so it is hard to tell).
+
+I have attached some screenshots of the display on my machine just in case you experience the same issue.
+
+![Alt text](Willow1Screen.png "Screenshot 1")
