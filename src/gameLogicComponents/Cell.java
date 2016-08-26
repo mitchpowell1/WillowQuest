@@ -8,13 +8,13 @@ import java.awt.Color;
  *
  */
 public enum Cell {
-	CORRIDOR (" ", Color.WHITE),
+	CORRIDOR ("\u25A1", Color.WHITE),
 	DOOR	("\u25EB", Color.YELLOW),
 	ENTRANCE ("\u2193", Color.BLUE),
 	EXIT ("\u2193", Color.CYAN),
 	MONSTER("\u2639", Color.magenta),
-	ROOM (" ", Color.LIGHT_GRAY),
-	STONE ("\u25A4", Color.BLACK),
+	ROOM ("\u25A1", Color.LIGHT_GRAY),
+	STONE ("\u25A0", Color.BLACK),
 	TRAP ("T", Color.RED),
 	TREASURE ("$", Color.GREEN),
 	WALL ("\u25A0", Color.DARK_GRAY);
