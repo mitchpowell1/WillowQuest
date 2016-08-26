@@ -14,7 +14,7 @@ public enum Cell {
 	EXIT ("\u2193", Color.CYAN),
 	MONSTER("\u2639", Color.magenta),
 	ROOM (" ", Color.LIGHT_GRAY),
-	STONE ("\u25A4", Color.BLACK),
+	STONE ("\u25A0", Color.BLACK),
 	TRAP ("T", Color.RED),
 	TREASURE ("$", Color.GREEN),
 	WALL ("\u25A0", Color.DARK_GRAY);
