@@ -62,18 +62,34 @@ public class DungeonFactory {
 		setDungeonWidth(size.getCols());
 	}
 	
+	/**
+	 * Get the size of the dungeon
+	 * @return the size of the dungeon
+	 */
 	public DungeonSize getDungeonSize(){
 		return this.dungeonSize;
 	}
 
+	/**
+	 * Get the current monster level of the dungeon
+	 * @return the monster level of the dungeon
+	 */
 	public MonsterLevels getMonsterLevel(){
 		return this.monsLevel;
 	}
 	
+	/**
+	 * Get the current room density setting for the dungeon
+	 * @return current room density
+	 */
 	public DungeonDensity getRoomDensity(){
 		return this.densityLevel;
 	}
 	
+	/**
+	 * Get the current treasure setting for the dungeon factory
+	 * @return the dungeon factory's treasure settings.
+	 */
 	public TreasureSettings getTreasureSettings(){
 		return this.treasureSet;
 	}
@@ -88,6 +104,10 @@ public class DungeonFactory {
 		this.monsterRoomProb = lev.getRoomProb();
 	}
 	
+	/**
+	 * Update the treasure settings
+	 * @param treas the new treasure settings.
+	 */
 	public void setTreasureSettings(TreasureSettings treas){
 		this.treasureSet = treas;
 	}
@@ -113,6 +133,10 @@ public class DungeonFactory {
 		return new Dungeon(cells);
 	}
 
+	/**
+	 * Calls the treasure generator to add treasure to the dungeon.
+	 * @param cells
+	 */
 	private void addTreasure(Cell[][] cells) {
 		this.treasureGenerator.generateTreasure(cells, treasureSet);
 	}
