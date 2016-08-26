@@ -24,4 +24,6 @@ square. Hopefully that will fix the issue (I can't reproduce it on my machine so
 
 I have attached some screenshots of the display on my machine just in case you experience the same issue.
 
-![Alt text](Willow1Screen.png "Screenshot 1")
+![Alt text](Willow1Screen.png "Screenshot 1, GUI")
+![Alt text](WillowQuestScreen2.png "Screenshot 2, GUI with dungeon")
+![Alt text](WillowQuestScreen3.png "Screenshot 3, Just dungeon")
