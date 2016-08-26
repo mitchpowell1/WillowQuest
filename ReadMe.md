@@ -1,4 +1,4 @@
-WillowQuest - Mitch Powell candidate project.
+# WillowQuest - Mitch Powell candidate project.
 
 My candidate submission project consists of a runnable .jar file that should be executable
 through a command line command of "java -jar <path to jar file>". The only dependency that
@@ -23,6 +23,8 @@ added an alternative version that replaces empty hallways (previously space char
 square. Hopefully that will fix the issue (I can't reproduce it on my machine so it is hard to tell).
 
 I have attached some screenshots of the display on my machine just in case you experience the same issue.
+
+## Screenshots
 
 ![Alt text](Willow1Screen.png "Screenshot 1, GUI")
 ![Alt text](WillowQuestScreen2.png "Screenshot 2, GUI with dungeon")
